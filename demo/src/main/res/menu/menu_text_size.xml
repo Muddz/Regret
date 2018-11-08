@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+
+    <item
+        android:id="@+id/textsize20"
+        android:title="20"
+        app:showAsAction="always" />
+
+
+    <item
+        android:id="@+id/textsize24"
+        android:title="24"
+        app:showAsAction="always" />
+
+
+    <item
+        android:id="@+id/textsize28"
+        android:title="28"
+        app:showAsAction="always" />
+
+
+</menu>
