@@ -2,7 +2,6 @@ package com.muddzdev.regret;
 
 import java.util.NoSuchElementException;
 
-
 /*
  *       Copyright 2018 Muddi Walid
  *       Licensed under the Apache License, Version 2.0 (the "License");
@@ -40,29 +39,18 @@ class DoublyLinkedList<E> {
     }
 
 
-    //TODO make this better and shorter
     public void add(E element) {
         Node newNode = new Node(element);
-
         if (head == null) {
             head = newNode;
         } else if (head.next == null) {
             newNode.prev = head;
             head.next = newNode;
-        } else if (head.prev != null) {
-            //Middle of the list
-            shouldRefreshSize = true;
-            head.next = null;
-            newNode.prev = head;
-            head.next = newNode;
-        } else if (head.prev == null && head.next != null) {
-            //Start of the list
-            head.next = null;
-            newNode.prev = head;
-            head.next = newNode;
-            shouldRefreshSize = true;
         } else {
-            newNode.prev = head.next;
+            head.next = null;
+            newNode.prev = head;
+            head.next = newNode;
+            shouldRefreshSize = true;
         }
 
         head = newNode;
@@ -71,9 +59,8 @@ class DoublyLinkedList<E> {
         } else {
             size++;
         }
-
-        shouldRefreshSize = false;
     }
+
 
     public E redo() {
         if (head == null || head.next == null) {
@@ -116,18 +103,15 @@ class DoublyLinkedList<E> {
     }
 
     private void refreshSize() {
-        //TODO should this start from 1 or 0?
-        //TODO Can this be shorten?
-        size = 0;
+        size = 1;
         Node tempHead = head;
-        if (tempHead != null) {
-            while (tempHead.prev != null) {
-                tempHead = tempHead.prev;
-            }
-            while (tempHead.next != null) {
-                tempHead = tempHead.next;
-                size++;
-            }
+        while (tempHead.prev != null) {
+            tempHead = tempHead.prev;
         }
+        while (tempHead.next != null) {
+            tempHead = tempHead.next;
+            size++;
+        }
+        shouldRefreshSize = false;
     }
 }
