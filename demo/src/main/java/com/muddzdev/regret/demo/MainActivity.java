@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onDo(String objectName, Object object) {
+
         switch (objectName) {
             case OBJECT_NAME_TEXT:
                 editText.setText((CharSequence) object);

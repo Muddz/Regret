@@ -12,9 +12,13 @@ public class Regret {
         this.regretHandler = new RegretHandler();
     }
 
+    public void add(@NonNull String objectName, @NonNull Object object) {
+        regretHandler.save(new Record(objectName, object));
+    }
+
     public void redo() {
-        if (regretHandler.hasNext() && listener != null) {
-            Record nextRecord = regretHandler.getNext();
+        if (regretHandler.canRedo() && listener != null) {
+            Record nextRecord = regretHandler.redo();
             String objectName = nextRecord.getObjectName();
             Object object = nextRecord.getObject();
             listener.onDo(objectName, object);
@@ -22,8 +26,8 @@ public class Regret {
     }
 
     public void undo() {
-        if (regretHandler.hasPrevious() && listener != null) {
-            Record nextRecord = regretHandler.getPrevious();
+        if (regretHandler.canUndo() && listener != null) {
+            Record nextRecord = regretHandler.undo();
             String objectName = nextRecord.getObjectName();
             Object object = nextRecord.getObject();
             listener.onDo(objectName, object);
@@ -31,8 +35,12 @@ public class Regret {
     }
 
 
-    public void add(@NonNull String objectName, @NonNull Object object) {
-        regretHandler.save(new Record(objectName, object));
+    public boolean canRedo() {
+        return regretHandler.canRedo();
+    }
+
+    public boolean canUndo() {
+        return regretHandler.canUndo();
     }
 
     public void clearSession() {
@@ -41,14 +49,6 @@ public class Regret {
 
     public int getCount() {
         return regretHandler.getCount();
-    }
-
-    public boolean hasNext() {
-        return regretHandler.hasNext();
-    }
-
-    public boolean hasPrevious() {
-        return regretHandler.hasPrevious();
     }
 
     public interface OnRegretListener {

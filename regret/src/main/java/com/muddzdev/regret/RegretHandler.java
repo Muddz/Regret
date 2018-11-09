@@ -2,46 +2,58 @@ package com.muddzdev.regret;
 
 class RegretHandler {
 
-    private int pointerIndex;
-    private DoublyLinkedList<Record> history = new DoublyLinkedList<>();
-    //    private Database storage;
+    private DoublyLinkedList<Record> list;
+    private Database databaseManager;
     private Session session;
 
     RegretHandler() {
-//        this.storage = Database.getDatabaseManager();
-//        this.session = storage.getSession();
-//        this.history = session.getList();
+        this.databaseManager = Database.getDatabaseManager();
+        this.session = databaseManager.getSession();
+        this.list = session.getList();
     }
 
     void save(Record record) {
-        history.add(record);
-//        session.setList(history);
-//        storage.saveSession(session);
+        DoublyLinkedList<Record> list = getList();
+        list.add(record);
+        session.setList(list);
+        databaseManager.saveSession(session);
     }
 
-    Record getPrevious() {
-        return history.undo();
+    private DoublyLinkedList<Record> getList() {
+        if (list != null) {
+            return list;
+        } else {
+            list = session.getList();
+            if (list == null) {
+                list = new DoublyLinkedList<>();
+            }
+            return list;
+        }
     }
 
-    Record getNext() {
-        return history.redo();
+    Record undo() {
+        return getList().undo();
     }
 
-    boolean hasNext() {
-        return history.canRedo();
+    Record redo() {
+        return getList().redo();
     }
 
-    boolean hasPrevious() {
-        return history.canUndo();
+    boolean canRedo() {
+        return getList().canRedo();
+    }
+
+    boolean canUndo() {
+        return getList().canUndo();
     }
 
     int getCount() {
-        return history.size();
+        return getList().size();
     }
 
     void clearSession() {
-        history.clear();
-//        storage.clearSession();
+        getList().clear();
+        databaseManager.clearSession();
     }
 
 

@@ -1,35 +1,38 @@
 package com.muddzdev.regret;
 
+import android.content.Context;
+import android.support.annotation.NonNull;
+
 import io.paperdb.Book;
 import io.paperdb.Paper;
 
+import static com.muddzdev.regret.Session.KEY_PAPER_SESSION;
 
- class Database implements StorageContract.Storage {
 
-    private Book storage;
+class Database {
+
+    private Book book;
+    private Context context;
 
     static Database getDatabaseManager() {
         return new Database();
     }
 
-     private Database() {
-        this.storage = Paper.book();
+    private Database() {
+        Paper.init(context);
+        this.book = Paper.book(KEY_PAPER_SESSION);
     }
 
-    @Override
-    public Session getSession() {
-        return storage.read(Session.KEY_PAPER_SESSION);
+    Session getSession() {
+        return book.read(KEY_PAPER_SESSION);
     }
 
-    @Override
-    public void saveSession(Session session) {
-        storage.write(Session.KEY_PAPER_SESSION, session);
+    void saveSession(@NonNull Session session) {
+        book.write(KEY_PAPER_SESSION, session);
     }
 
-
-    @Override
-    public void clearSession() {
-        storage.destroy();
+    void clearSession() {
+        book.destroy();
     }
 
 }
