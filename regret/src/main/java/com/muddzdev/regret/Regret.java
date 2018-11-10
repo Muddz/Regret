@@ -1,5 +1,6 @@
 package com.muddzdev.regret;
 
+import android.content.Context;
 import android.support.annotation.NonNull;
 
 public class Regret {
@@ -7,9 +8,9 @@ public class Regret {
     private OnRegretListener listener;
     private RegretHandler regretHandler;
 
-    public Regret(@NonNull OnRegretListener listener) {
+    public Regret(@NonNull Context context, @NonNull OnRegretListener listener) {
+        this.regretHandler = new RegretHandler(context);
         this.listener = listener;
-        this.regretHandler = new RegretHandler();
     }
 
     public void add(@NonNull String objectName, @NonNull Object object) {

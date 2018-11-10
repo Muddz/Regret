@@ -3,7 +3,6 @@ package com.muddzdev.regret.demo;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.text.Editable;
@@ -59,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtColorPicker.setOnClickListener(this);
         backgroundColorPicker.setOnClickListener(this);
 
-        regret = new Regret(this);
+        regret = new Regret(this, this);
         regret.add(OBJECT_NAME_TEXT, editText.getText().toString());
         regret.add(OBJECT_NAME_BACKGROUND_COLOR, Color.WHITE);
         regret.add(OBJECT_NAME_TEXT_COLOR, Color.BLACK);
@@ -70,7 +69,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onDo(String objectName, Object object) {
-
         switch (objectName) {
             case OBJECT_NAME_TEXT:
                 editText.setText((CharSequence) object);

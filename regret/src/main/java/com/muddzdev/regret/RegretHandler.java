@@ -1,15 +1,19 @@
 package com.muddzdev.regret;
 
+import android.content.Context;
+
 class RegretHandler {
 
     private DoublyLinkedList<Record> list;
     private Database databaseManager;
     private Session session;
 
-    RegretHandler() {
-        this.databaseManager = Database.getDatabaseManager();
+    RegretHandler(Context context) {
+        this.databaseManager = Database.getDatabaseManager(context);
         this.session = databaseManager.getSession();
-        this.list = session.getList();
+        if (session == null) {
+            session = new Session();
+        }
     }
 
     void save(Record record) {
@@ -23,13 +27,15 @@ class RegretHandler {
         if (list != null) {
             return list;
         } else {
-            list = session.getList();
-            if (list == null) {
+            if (session != null) {
+                list = session.getList();
+            } else {
                 list = new DoublyLinkedList<>();
             }
             return list;
         }
     }
+
 
     Record undo() {
         return getList().undo();
@@ -55,6 +61,4 @@ class RegretHandler {
         getList().clear();
         databaseManager.clearSession();
     }
-
-
 }
