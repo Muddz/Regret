@@ -5,11 +5,9 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
-/**
- * Example local unit test, which will execute on the development machine (host).
- */
 public class DoublyLinkedListTest {
 
     private static final String NAME_TEST_NUMBERS = "NAME_TEST_NUMBERS";
@@ -35,14 +33,17 @@ public class DoublyLinkedListTest {
     @Test
     public void testUndo() {
         System.out.println("----- Undo Test -----");
+
+        assertFalse(linkedList.canRedo());
         assertTrue(linkedList.canUndo());
         int listSize = linkedList.size() - 1;
 
         for (int i = listSize; i > 0; i--) {
             Record record = linkedList.undo();
             int value = (int) record.getObject();
-            assertEquals(i, value);
             System.out.println(String.format("Undoing to %d", value));
+            assertEquals(i, value);
+
         }
     }
 
@@ -50,11 +51,11 @@ public class DoublyLinkedListTest {
     public void testRedo() {
         System.out.println("----- Redo Test -----");
 
-        assertTrue(linkedList.canUndo());
         while (linkedList.canUndo()) {
             linkedList.undo();
         }
 
+        assertFalse(linkedList.canUndo());
         assertTrue(linkedList.canRedo());
         int listSize = linkedList.size() + 1;
 

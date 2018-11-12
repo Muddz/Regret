@@ -18,14 +18,11 @@ import com.muddzdev.regret.Regret;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, Regret.OnRegretListener {
 
-
     private static final String OBJECT_NAME_TEXT = "OBJECT_NAME_TEXT";
     private static final String OBJECT_NAME_BACKGROUND_COLOR = "OBJECT_NAME_BACKGROUND_COLOR";
     private static final String OBJECT_NAME_TEXT_COLOR = "OBJECT_NAME_TEXT_COLOR";
-
     private static final int COLOR_PICKER_TEXT = 111;
     private static final int COLOR_PICKER_BACKGROUND = 222;
-
     private boolean isUndoing;
 
     Toolbar toolbar;
@@ -62,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         regret.add(OBJECT_NAME_TEXT, editText.getText().toString());
         regret.add(OBJECT_NAME_BACKGROUND_COLOR, Color.WHITE);
         regret.add(OBJECT_NAME_TEXT_COLOR, Color.BLACK);
-
         setSupportActionBar(toolbar);
     }
 
@@ -80,6 +76,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 editText.setBackgroundColor((Integer) object);
                 break;
         }
+    }
+
+    @Override
+    public void status(boolean canUndo, boolean canRedo) {
+        btnUndo.setAlpha(canUndo ? 1 : 0.4f);
+        btnRedo.setAlpha(canRedo ? 1 : 0.4f);
+        btnUndo.setEnabled(canUndo);
+        btnRedo.setEnabled(canRedo);
     }
 
     @Override
@@ -106,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 regret.add(OBJECT_NAME_TEXT, text);
             }
         }
-
         isUndoing = false;
     }
 
@@ -115,7 +118,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onClick(View v) {
         switch (v.getId()) {
             case R.id.btn_clear:
-                regret.clearSession();
+                regret.clear();
                 Toast.makeText(this, "History cleared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_undo:
@@ -138,11 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    private void enableUndoRedoButton(View view, boolean enable) {
-        view.setAlpha(enable ? 1 : 0.5f);
-        view.setEnabled(enable);
-    }
-
     private void showRegretCountToast() {
         Toast.makeText(this, "Count: " + regret.getCount(), Toast.LENGTH_SHORT).show();
     }
@@ -151,7 +149,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground().mutate();
         return colorDrawable.getColor();
     }
-
 
     //Not in use
     @Override

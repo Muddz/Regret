@@ -11,10 +11,12 @@ public class Regret {
     public Regret(@NonNull Context context, @NonNull OnRegretListener listener) {
         this.regretHandler = new RegretHandler(context);
         this.listener = listener;
+        updateUndoRedoListener();
     }
 
     public void add(@NonNull String objectName, @NonNull Object object) {
         regretHandler.save(new Record(objectName, object));
+        updateUndoRedoListener();
     }
 
     public void redo() {
@@ -23,6 +25,7 @@ public class Regret {
             String objectName = nextRecord.getObjectName();
             Object object = nextRecord.getObject();
             listener.onDo(objectName, object);
+            updateUndoRedoListener();
         }
     }
 
@@ -32,27 +35,29 @@ public class Regret {
             String objectName = nextRecord.getObjectName();
             Object object = nextRecord.getObject();
             listener.onDo(objectName, object);
+            updateUndoRedoListener();
         }
     }
 
-
-    public boolean canRedo() {
-        return regretHandler.canRedo();
-    }
-
-    public boolean canUndo() {
-        return regretHandler.canUndo();
-    }
-
-    public void clearSession() {
-        regretHandler.clearSession();
+    public void clear() {
+        regretHandler.clear();
+        updateUndoRedoListener();
     }
 
     public int getCount() {
         return regretHandler.getCount();
     }
 
-    public interface OnRegretListener {
-        void onDo(String objectName, Object object);
+
+    private void updateUndoRedoListener() {
+        listener.status(regretHandler.canUndo(), regretHandler.canRedo());
     }
+
+    public interface OnRegretListener {
+        //TODO Refactor to better naming
+        void onDo(String objectName, Object object);
+
+        void status(boolean canUndo, boolean canRedo);
+    }
+
 }
