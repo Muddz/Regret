@@ -3,59 +3,39 @@ package com.muddzdev.regret;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
-
 import java.lang.reflect.Type;
+
 
 class Storage {
 
-    private static final String KEY_SESSION = "REGRET_SESSION_KEY";
-    private DoublyLinkedList<Record> list;
+    private static final String KEY_REGRET_HISTORY = "KEY_REGRET_HISTORY";
     private SharedPreferences prefs;
+    private Type classType;
 
     public Storage(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        list = new DoublyLinkedList<>();
+        classType = new TypeToken<DoublyLinkedList<Record>>() {
+        }.getType();
     }
 
-    public void setList(DoublyLinkedList<Record> list) {
-        this.list = list;
-        saveList(list);
+    public void saveHistory(DoublyLinkedList<Record> history) {
+        String json = new Gson().toJson(history, classType);
+        prefs.edit().putString(KEY_REGRET_HISTORY, json).apply();
     }
 
-    public DoublyLinkedList<Record> getList() {
-
-        return list;
-
-//        if (list == null) {
-//            return loadList();
-//        } else {
-//            return list;
-//        }
+    public DoublyLinkedList<Record> loadHistory() {
+        String json = prefs.getString(KEY_REGRET_HISTORY, null);
+        return new Gson().fromJson(json, classType);
     }
 
-    private DoublyLinkedList<Record> loadList() {
-        String json = prefs.getString(KEY_SESSION, null);
-        if (json != null) {
-            Type classType = new TypeToken<DoublyLinkedList<Record>>() {
-            }.getType();
-            return new Gson().fromJson(json, classType);
-        } else {
-            return new DoublyLinkedList<>();
-        }
-    }
-
-    private void saveList(DoublyLinkedList<Record> list) {
-//        Type classType = new TypeToken<DoublyLinkedList<Record>>() {
-//        }.getType();
-//        String json = new Gson().toJson(list, classType);
-//        prefs.edit().putString(KEY_SESSION, json).apply();
+    public boolean hasHistory() {
+        return prefs.contains(KEY_REGRET_HISTORY);
     }
 
     public void clear() {
-        prefs.edit().remove(KEY_SESSION).apply();
+        prefs.edit().remove(KEY_REGRET_HISTORY).apply();
     }
 
 }

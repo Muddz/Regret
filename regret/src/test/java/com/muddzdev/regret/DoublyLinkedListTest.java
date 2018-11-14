@@ -17,7 +17,6 @@ public class DoublyLinkedListTest {
     private static final String NAME_BOOLEAN_VALUE = "NAME_BOOLEAN_VALUE";
     private static final String NAME_CHAR_VALUE = "NAME_CHAR_VALUE";
     private static final String NAME_STRING_VALUE = "NAME_STRING_VALUE";
-
     private DoublyLinkedList<Record> linkedList;
     private int testNumbers[] = {1, 2, 3, 4, 5, 6};
 

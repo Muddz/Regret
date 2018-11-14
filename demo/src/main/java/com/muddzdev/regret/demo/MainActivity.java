@@ -15,8 +15,9 @@ import android.widget.Toast;
 
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
 import com.muddzdev.regret.Regret;
+import com.muddzdev.regret.OnRegretListener;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, Regret.OnRegretListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, OnRegretListener {
 
     private static final String OBJECT_NAME_TEXT = "OBJECT_NAME_TEXT";
     private static final String OBJECT_NAME_BACKGROUND_COLOR = "OBJECT_NAME_BACKGROUND_COLOR";
@@ -64,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onDo(String objectName, Object object) {
+    public void onRegret(String objectName, Object object) {
         switch (objectName) {
             case OBJECT_NAME_TEXT:
                 editText.setText((CharSequence) object);
@@ -79,12 +80,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void status(boolean canUndo, boolean canRedo) {
+    public void onCanUndoRedo(boolean canUndo, boolean canRedo) {
         btnUndo.setAlpha(canUndo ? 1 : 0.4f);
         btnRedo.setAlpha(canRedo ? 1 : 0.4f);
         btnUndo.setEnabled(canUndo);
         btnRedo.setEnabled(canRedo);
     }
+
 
     @Override
     public void onColorSelected(int dialogId, int color) {

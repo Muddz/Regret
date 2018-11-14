@@ -3,61 +3,44 @@ package com.muddzdev.regret;
 import android.content.Context;
 import android.support.annotation.NonNull;
 
-public class Regret {
+public class Regret implements OnRegretListener {
 
+    private HistoryManager regretHandler;
     private OnRegretListener listener;
-    private RegretHandler regretHandler;
 
     public Regret(@NonNull Context context, @NonNull OnRegretListener listener) {
-        this.regretHandler = new RegretHandler(context);
+        this.regretHandler = new HistoryManager(context, this);
         this.listener = listener;
-        updateUndoRedoListener();
     }
 
     public void add(@NonNull String objectName, @NonNull Object object) {
-        regretHandler.save(new Record(objectName, object));
-        updateUndoRedoListener();
-    }
-
-    public void redo() {
-        if (regretHandler.canRedo() && listener != null) {
-            Record nextRecord = regretHandler.redo();
-            String objectName = nextRecord.getObjectName();
-            Object object = nextRecord.getObject();
-            listener.onDo(objectName, object);
-            updateUndoRedoListener();
-        }
+        regretHandler.add(objectName, object);
     }
 
     public void undo() {
-        if (regretHandler.canUndo() && listener != null) {
-            Record nextRecord = regretHandler.undo();
-            String objectName = nextRecord.getObjectName();
-            Object object = nextRecord.getObject();
-            listener.onDo(objectName, object);
-            updateUndoRedoListener();
-        }
+        regretHandler.undo();
+    }
+
+    public void redo() {
+        regretHandler.redo();
     }
 
     public void clear() {
         regretHandler.clear();
-        updateUndoRedoListener();
     }
 
     public int getCount() {
         return regretHandler.getCount();
     }
 
-
-    private void updateUndoRedoListener() {
-        listener.status(regretHandler.canUndo(), regretHandler.canRedo());
+    @Override
+    public void onRegret(String objectName, Object object) {
+        listener.onRegret(objectName, object);
     }
 
-    public interface OnRegretListener {
-        //TODO Refactor to better naming
-        void onDo(String objectName, Object object);
-
-        void status(boolean canUndo, boolean canRedo);
+    @Override
+    public void onCanUndoRedo(boolean canUndo, boolean canRedo) {
+        listener.onCanUndoRedo(canUndo, canRedo);
     }
 
 }

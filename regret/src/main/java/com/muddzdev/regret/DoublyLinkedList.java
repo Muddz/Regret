@@ -1,6 +1,6 @@
 package com.muddzdev.regret;
 
-import java.util.List;
+import java.io.Serializable;
 import java.util.NoSuchElementException;
 
 /*
@@ -23,12 +23,14 @@ import java.util.NoSuchElementException;
  * This DoublyLinkedList is specifically tailored towards an Undo/Redo data structure
  */
 
-class DoublyLinkedList<E> {
+class DoublyLinkedList<E> implements Serializable {
 
     private Node head;
     private int size;
     private boolean shouldRefreshSize;
 
+
+    //Should this be static?
     private class Node {
         E element;
         Node next = null;

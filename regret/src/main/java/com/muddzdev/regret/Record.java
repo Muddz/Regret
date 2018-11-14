@@ -5,15 +5,16 @@ class Record {
     private String objectName;
     private Object object;
 
-    Record(String objectName, Object object) {
+    public Record(String objectName, Object object) {
         this.objectName = objectName;
         this.object = object;
     }
 
-    Object getObject() {
+    public Object getObject() {
         return object;
     }
-    String getObjectName() {
+
+    public String getObjectName() {
         return objectName;
     }
 }
