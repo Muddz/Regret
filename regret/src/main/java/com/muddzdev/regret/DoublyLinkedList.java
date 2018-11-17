@@ -23,6 +23,7 @@ import java.util.NoSuchElementException;
  * This DoublyLinkedList is specifically tailored towards an Undo/Redo data structure
  */
 
+//Should this be clonable?
 class DoublyLinkedList<E> implements Serializable {
 
     private Node head;

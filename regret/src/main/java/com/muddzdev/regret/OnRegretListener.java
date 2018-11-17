@@ -1,6 +1,6 @@
 package com.muddzdev.regret;
 
 public interface OnRegretListener {
-    void onRegret(String objectName, Object object);
-    void onCanUndoRedo(boolean canUndo, boolean canRedo);
+    void onDo(String objectName, Object object);
+    void onCanDo(boolean canUndo, boolean canRedo);
 }

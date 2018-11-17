@@ -8,7 +8,7 @@ class HistoryManager {
     private OnRegretListener listener;
     private Storage storage;
 
-    HistoryManager(Context context, OnRegretListener listener) {
+    public HistoryManager(Context context, OnRegretListener listener) {
         this.storage = new Storage(context);
         this.listener = listener;
         initHistory();
@@ -35,7 +35,7 @@ class HistoryManager {
             Record nextRecord = history.undo();
             String objectName = nextRecord.getObjectName();
             Object object = nextRecord.getObject();
-            listener.onRegret(objectName, object);
+            listener.onDo(objectName, object);
             updateUndoRedoListener();
         }
     }
@@ -45,7 +45,7 @@ class HistoryManager {
             Record nextRecord = history.redo();
             String objectName = nextRecord.getObjectName();
             Object object = nextRecord.getObject();
-            listener.onRegret(objectName, object);
+            listener.onDo(objectName, object);
             updateUndoRedoListener();
         }
     }
@@ -62,7 +62,7 @@ class HistoryManager {
     }
 
     private void updateUndoRedoListener() {
-        listener.onCanUndoRedo(history.canUndo(), history.canRedo());
+        listener.onCanDo(history.canUndo(), history.canRedo());
     }
 
 }

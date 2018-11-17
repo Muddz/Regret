@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onRegret(String objectName, Object object) {
+    public void onDo(String objectName, Object object) {
         switch (objectName) {
             case OBJECT_NAME_TEXT:
                 editText.setText((CharSequence) object);
@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onCanUndoRedo(boolean canUndo, boolean canRedo) {
+    public void onCanDo(boolean canUndo, boolean canRedo) {
         btnUndo.setAlpha(canUndo ? 1 : 0.4f);
         btnRedo.setAlpha(canRedo ? 1 : 0.4f);
         btnUndo.setEnabled(canUndo);

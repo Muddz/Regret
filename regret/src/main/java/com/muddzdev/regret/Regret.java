@@ -34,13 +34,13 @@ public class Regret implements OnRegretListener {
     }
 
     @Override
-    public void onRegret(String objectName, Object object) {
-        listener.onRegret(objectName, object);
+    public void onDo(String objectName, Object object) {
+        listener.onDo(objectName, object);
     }
 
     @Override
-    public void onCanUndoRedo(boolean canUndo, boolean canRedo) {
-        listener.onCanUndoRedo(canUndo, canRedo);
+    public void onCanDo(boolean canUndo, boolean canRedo) {
+        listener.onCanDo(canUndo, canRedo);
     }
 
 }
