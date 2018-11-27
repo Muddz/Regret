@@ -23,8 +23,8 @@ class HistoryManager {
         }
     }
 
-    public void add(String objectName, Object object) {
-        history.add(new Record(objectName, object));
+    public void add(String key, Object value) {
+        history.add(new Record(key, value));
         storage.saveHistory(history);
         updateUndoRedoListener();
     }
@@ -33,8 +33,8 @@ class HistoryManager {
     public void undo() {
         if (history.canUndo() && listener != null) {
             Record nextRecord = history.undo();
-            String objectName = nextRecord.getObjectName();
-            Object object = nextRecord.getObject();
+            String objectName = nextRecord.getKey();
+            Object object = nextRecord.getValue();
             listener.onDo(objectName, object);
             updateUndoRedoListener();
         }
@@ -43,8 +43,8 @@ class HistoryManager {
     public void redo() {
         if (history.canRedo() && listener != null) {
             Record nextRecord = history.redo();
-            String objectName = nextRecord.getObjectName();
-            Object object = nextRecord.getObject();
+            String objectName = nextRecord.getKey();
+            Object object = nextRecord.getValue();
             listener.onDo(objectName, object);
             updateUndoRedoListener();
         }

@@ -1,14 +1,9 @@
 package com.muddzdev.regret;
 
 
-import android.graphics.Paint;
-
-import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -21,7 +16,7 @@ public class RecordTest {
     @Test
     public void testIntObject() {
         Record record = new Record(OBJECT_NAME, 2);
-        int object = (int) record.getObject();
+        int object = (int) record.getValue();
         assertEquals(2, object);
     }
 
@@ -29,7 +24,7 @@ public class RecordTest {
     public void testIntArrayObject() {
         int testNumbers[] = {1, 2, 3};
         Record record = new Record(OBJECT_NAME, testNumbers);
-        int[] object = (int[]) record.getObject();
+        int[] object = (int[]) record.getValue();
         assertArrayEquals(testNumbers, object);
     }
 
@@ -38,7 +33,7 @@ public class RecordTest {
         ArrayList<Integer> list = new ArrayList<>();
         list.add(Integer.MAX_VALUE);
         Record record = new Record(OBJECT_NAME, list);
-        ArrayList object = (ArrayList) record.getObject();
+        ArrayList object = (ArrayList) record.getValue();
         assertEquals(list, object);
     }
 
@@ -46,7 +41,7 @@ public class RecordTest {
     @Test
     public void testObjectName() {
         Record record = new Record(OBJECT_NAME, OBJECT_NAME);
-        String object = (String) record.getObject();
+        String object = (String) record.getValue();
         assertEquals(OBJECT_NAME, object);
     }
 

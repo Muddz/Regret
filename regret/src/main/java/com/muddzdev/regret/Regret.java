@@ -13,8 +13,8 @@ public class Regret implements OnRegretListener {
         this.listener = listener;
     }
 
-    public void add(@NonNull String objectName, @NonNull Object object) {
-        regretHandler.add(objectName, object);
+    public void add(@NonNull String key, @NonNull Object value) {
+        regretHandler.add(key, value);
     }
 
     public void undo() {

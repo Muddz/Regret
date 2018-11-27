@@ -36,7 +36,7 @@ public class DoublyLinkedListTest {
         int listSize = linkedList.size() - 1;
         for (int i = listSize; i > 0; i--) {
             Record record = linkedList.undo();
-            int value = (int) record.getObject();
+            int value = (int) record.getValue();
             System.out.println(String.format("Undoing to %d", value));
             assertEquals(i, value);
 
@@ -55,7 +55,7 @@ public class DoublyLinkedListTest {
         int listSize = linkedList.size() + 1;
         for (int i = 2; i < listSize; i++) {
             Record record = linkedList.redo();
-            int value = (int) record.getObject();
+            int value = (int) record.getValue();
             System.out.println(String.format("Redoing to %d", value));
             assertEquals(i, value);
         }
@@ -70,7 +70,7 @@ public class DoublyLinkedListTest {
         //We undo from the end to the middle of the list.
         while (linkedList.canUndo()) {
             Record record = linkedList.undo();
-            int value = (int) record.getObject();
+            int value = (int) record.getValue();
             System.out.println(String.format("Undoing to %d", value));
             if (value == 3) {
                 System.out.println(String.format("Adding middle element: %d", newValue));
@@ -82,7 +82,7 @@ public class DoublyLinkedListTest {
         //Then we redo the whole way to the end where we expect the newValue = 9
         while (linkedList.canRedo()) {
             Record record = linkedList.redo();
-            targetValue = (int) record.getObject();
+            targetValue = (int) record.getValue();
             System.out.println(String.format("Redoing to %d", targetValue));
         }
 
@@ -120,8 +120,8 @@ public class DoublyLinkedListTest {
 
         while (linkedList.canUndo()) {
             Record record = linkedList.undo();
-            Object o = record.getObject();
-            switch (record.getObjectName()) {
+            Object o = record.getValue();
+            switch (record.getKey()) {
                 case NAME_INT_VALUE:
                     assertEquals(intValue, o);
                     break;

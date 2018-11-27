@@ -2,19 +2,19 @@ package com.muddzdev.regret;
 
 class Record {
 
-    private String objectName;
-    private Object object;
+    private String key;
+    private Object value;
 
-    public Record(String objectName, Object object) {
-        this.objectName = objectName;
-        this.object = object;
+    public Record(String key, Object value) {
+        this.key = key;
+        this.value = value;
     }
 
-    public Object getObject() {
-        return object;
+    public Object getValue() {
+        return value;
     }
 
-    public String getObjectName() {
-        return objectName;
+    public String getKey() {
+        return key;
     }
 }
