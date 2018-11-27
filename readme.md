@@ -11,9 +11,9 @@ The library is simple to use and will persist your history until you clear it ma
 1) Instantiate `Regret` and add data to it
 ```java
    Regret regret = new Regret(context, this);
-   regret.add(KEY_NAME_TEXT, editText.getText().toString());
-   regret.add(KEY_NAME_BACKGROUND_COLOR, Color.WHITE);
-   regret.add(KEY_NAME_TEXT_COLOR, Color.BLACK);
+   regret.add(KEY_TEXT, editText.getText().toString());
+   regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
+   regret.add(KEY_TEXT_COLOR, Color.BLACK);
 ```
 
 2) Call `regret.undo()` or `regret.redo()`. Your data will be returned via the callback
@@ -22,13 +22,13 @@ The library is simple to use and will persist your history until you clear it ma
   @Override
     public void onDo(String key, Object value) {
         switch (key) {
-            case KEY_NAME_TEXT:
+            case KEY_TEXT:
                 editText.setText((CharSequence) value);
                 break;
-            case KEY_NAME_TEXT_COLOR:
+            case KEY_TEXT_COLOR:
                 editText.setTextColor((Integer) value);
                 break;
-            case KEY_NAME_BACKGROUND_COLOR:
+            case KEY_BACKGROUND_COLOR:
                 editText.setBackgroundColor((Integer) value);
                 break;
         }
