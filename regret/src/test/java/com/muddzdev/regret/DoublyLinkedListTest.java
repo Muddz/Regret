@@ -5,7 +5,6 @@ import org.junit.Test;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
 public class DoublyLinkedListTest {
@@ -17,8 +16,8 @@ public class DoublyLinkedListTest {
     private static final String NAME_BOOLEAN_VALUE = "NAME_BOOLEAN_VALUE";
     private static final String NAME_CHAR_VALUE = "NAME_CHAR_VALUE";
     private static final String NAME_STRING_VALUE = "NAME_STRING_VALUE";
-    private DoublyLinkedList<Record> linkedList;
     private int testNumbers[] = {1, 2, 3, 4, 5, 6};
+    private DoublyLinkedList<Record> linkedList;
 
     @Before
     public void setup() {
@@ -33,10 +32,8 @@ public class DoublyLinkedListTest {
     public void testUndo() {
         System.out.println("----- Undo Test -----");
 
-        assertFalse(linkedList.canRedo());
         assertTrue(linkedList.canUndo());
         int listSize = linkedList.size() - 1;
-
         for (int i = listSize; i > 0; i--) {
             Record record = linkedList.undo();
             int value = (int) record.getObject();
@@ -54,15 +51,13 @@ public class DoublyLinkedListTest {
             linkedList.undo();
         }
 
-        assertFalse(linkedList.canUndo());
         assertTrue(linkedList.canRedo());
         int listSize = linkedList.size() + 1;
-
         for (int i = 2; i < listSize; i++) {
             Record record = linkedList.redo();
             int value = (int) record.getObject();
-            assertEquals(i, value);
             System.out.println(String.format("Redoing to %d", value));
+            assertEquals(i, value);
         }
     }
 
@@ -72,18 +67,19 @@ public class DoublyLinkedListTest {
         int targetValue = 0;
         int newValue = 9;
 
-        //We undo from the end to the middle (3) of the list.
+        //We undo from the end to the middle of the list.
         while (linkedList.canUndo()) {
             Record record = linkedList.undo();
             int value = (int) record.getObject();
             System.out.println(String.format("Undoing to %d", value));
             if (value == 3) {
+                System.out.println(String.format("Adding middle element: %d", newValue));
                 linkedList.add(new Record(NAME_TEST_NUMBERS, newValue));
                 linkedList.undo();
             }
         }
 
-        //Then we redo the whole way to the end
+        //Then we redo the whole way to the end where we expect the newValue = 9
         while (linkedList.canRedo()) {
             Record record = linkedList.redo();
             targetValue = (int) record.getObject();

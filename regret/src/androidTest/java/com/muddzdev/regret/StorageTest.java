@@ -1,9 +1,7 @@
 package com.muddzdev.regret;
 
-import android.content.Context;
 import android.support.test.InstrumentationRegistry;
 import android.support.test.runner.AndroidJUnit4;
-import android.util.Log;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -15,25 +13,24 @@ import static org.junit.Assert.*;
 public class StorageTest {
 
     private Storage storage;
-    private DoublyLinkedList<Record> history;
+    private DoublyLinkedList<Record> doublyLinkedList;
 
     @Before
     public void setup() {
-        Context appContext = InstrumentationRegistry.getTargetContext();
-        storage = new Storage(appContext);
-        history = new DoublyLinkedList<>();
+        storage = new Storage(InstrumentationRegistry.getTargetContext());
+        doublyLinkedList = new DoublyLinkedList<>();
     }
 
     @Test
     public void testLoadHistory() {
-        storage.saveHistory(history);
+        storage.saveHistory(doublyLinkedList);
         assertTrue(storage.hasHistory());
         assertNotNull(storage.loadHistory());
     }
 
     @Test
     public void testSaveHistory() {
-        storage.saveHistory(history);
+        storage.saveHistory(doublyLinkedList);
         assertTrue(storage.hasHistory());
     }
 
