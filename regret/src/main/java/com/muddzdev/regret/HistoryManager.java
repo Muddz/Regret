@@ -12,7 +12,7 @@ class HistoryManager {
         this.storage = new Storage(context);
         this.listener = listener;
         initHistory();
-        updateUndoRedoListener();
+        updateCanDoListener();
     }
 
     private void initHistory() {
@@ -26,42 +26,45 @@ class HistoryManager {
     public void add(String key, Object value) {
         history.add(new Record(key, value));
         storage.saveHistory(history);
-        updateUndoRedoListener();
+        updateCanDoListener();
     }
 
 
     public void undo() {
         if (history.canUndo() && listener != null) {
             Record nextRecord = history.undo();
-            String objectName = nextRecord.getKey();
-            Object object = nextRecord.getValue();
-            listener.onDo(objectName, object);
-            updateUndoRedoListener();
+            String key = nextRecord.getKey();
+            Object value = nextRecord.getValue();
+            listener.onDo(key, value);
+            updateCanDoListener();
         }
     }
 
     public void redo() {
         if (history.canRedo() && listener != null) {
             Record nextRecord = history.redo();
-            String objectName = nextRecord.getKey();
-            Object object = nextRecord.getValue();
-            listener.onDo(objectName, object);
-            updateUndoRedoListener();
+            String key = nextRecord.getKey();
+            Object value = nextRecord.getValue();
+            listener.onDo(key, value);
+            updateCanDoListener();
         }
     }
 
+    public boolean canUndo(){
+        return history.canUndo();
+    }
 
-    public int getCount() {
-        return history.size();
+    public boolean canRedo(){
+        return history.canRedo();
     }
 
     public void clear() {
         history.clear();
         storage.clear();
-        updateUndoRedoListener();
+        updateCanDoListener();
     }
 
-    private void updateUndoRedoListener() {
+    private void updateCanDoListener() {
         listener.onCanDo(history.canUndo(), history.canRedo());
     }
 

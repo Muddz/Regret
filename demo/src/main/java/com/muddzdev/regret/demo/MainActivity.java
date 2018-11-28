@@ -14,14 +14,14 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
-import com.muddzdev.regret.Regret;
 import com.muddzdev.regret.OnRegretListener;
+import com.muddzdev.regret.Regret;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, OnRegretListener {
 
-    private static final String OBJECT_NAME_TEXT = "OBJECT_NAME_TEXT";
-    private static final String OBJECT_NAME_BACKGROUND_COLOR = "OBJECT_NAME_BACKGROUND_COLOR";
-    private static final String OBJECT_NAME_TEXT_COLOR = "OBJECT_NAME_TEXT_COLOR";
+    private static final String KEY_TEXT = "KEY_TEXT";
+    private static final String KEY_BACKGROUND_COLOR = "KEY_BACKGROUND_COLOR";
+    private static final String KEY_TEXT_COLOR = "KEY_TEXT_COLOR";
     private static final int COLOR_PICKER_TEXT = 111;
     private static final int COLOR_PICKER_BACKGROUND = 222;
     private boolean isUndoing;
@@ -57,24 +57,24 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         backgroundColorPicker.setOnClickListener(this);
 
         regret = new Regret(this, this);
-        regret.add(OBJECT_NAME_TEXT, editText.getText().toString());
-        regret.add(OBJECT_NAME_BACKGROUND_COLOR, Color.WHITE);
-        regret.add(OBJECT_NAME_TEXT_COLOR, Color.BLACK);
+        regret.add(KEY_TEXT, editText.getText().toString());
+        regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
+        regret.add(KEY_TEXT_COLOR, Color.BLACK);
         setSupportActionBar(toolbar);
     }
 
 
     @Override
-    public void onDo(String objectName, Object object) {
-        switch (objectName) {
-            case OBJECT_NAME_TEXT:
-                editText.setText((CharSequence) object);
+    public void onDo(String key, Object value) {
+        switch (key) {
+            case KEY_TEXT:
+                editText.setText((CharSequence) value);
                 break;
-            case OBJECT_NAME_TEXT_COLOR:
-                editText.setTextColor((Integer) object);
+            case KEY_TEXT_COLOR:
+                editText.setTextColor((Integer) value);
                 break;
-            case OBJECT_NAME_BACKGROUND_COLOR:
-                editText.setBackgroundColor((Integer) object);
+            case KEY_BACKGROUND_COLOR:
+                editText.setBackgroundColor((Integer) value);
                 break;
         }
     }
@@ -93,14 +93,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (dialogId) {
             case COLOR_PICKER_TEXT:
                 editText.setTextColor(color);
-                regret.add(OBJECT_NAME_TEXT_COLOR, color);
+                regret.add(KEY_TEXT_COLOR, color);
                 break;
             case COLOR_PICKER_BACKGROUND:
                 editText.setBackgroundColor(color);
-                regret.add(OBJECT_NAME_BACKGROUND_COLOR, color);
+                regret.add(KEY_BACKGROUND_COLOR, color);
                 break;
         }
-        showRegretCountToast();
     }
 
 
@@ -109,7 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isUndoing) {
             String text = s.toString().trim();
             if (!text.isEmpty()) {
-                regret.add(OBJECT_NAME_TEXT, text);
+                regret.add(KEY_TEXT, text);
             }
         }
         isUndoing = false;
@@ -142,10 +141,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    private void showRegretCountToast() {
-        Toast.makeText(this, "Count: " + regret.getCount(), Toast.LENGTH_SHORT).show();
-    }
 
     private int getBackgroundColor() {
         ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground().mutate();

@@ -20,7 +20,7 @@ import java.util.NoSuchElementException;
 
 /**
  * @author Muddi Walid
- * This DoublyLinkedList is specifically tailored towards an Undo/Redo data structure
+ * This DoublyLinkedList is specifically tailored towards an Undo/Redo use case
  */
 
 //Should this be clonable?
