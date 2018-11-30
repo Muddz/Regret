@@ -39,12 +39,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-
-        toolbar = findViewById(R.id.toolbar);
         btnUndo = findViewById(R.id.btn_undo);
         btnRedo = findViewById(R.id.btn_redo);
         btnClear = findViewById(R.id.btn_clear);
         editText = findViewById(R.id.edittext);
+        toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
 
         txtColorPicker = findViewById(R.id.txt_color_picker);
         backgroundColorPicker = findViewById(R.id.bcg_color_picker);
@@ -57,13 +57,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         backgroundColorPicker.setOnClickListener(this);
 
         regret = new Regret(this, this);
-        regret.add(KEY_TEXT, editText.getText().toString());
-        regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
-        regret.add(KEY_TEXT_COLOR, Color.BLACK);
-        setSupportActionBar(toolbar);
+        if (regret.isEmpty()) {
+            regret.add(KEY_TEXT, editText.getText().toString());
+            regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
+            regret.add(KEY_TEXT_COLOR, Color.BLACK);
+        }
     }
 
 
+    //The returned values from the regret.undo() or regret.redo() calls
     @Override
     public void onDo(String key, Object value) {
         switch (key) {
@@ -79,6 +81,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+
+    //Enable or disable Undo Redo
     @Override
     public void onCanDo(boolean canUndo, boolean canRedo) {
         btnUndo.setAlpha(canUndo ? 1 : 0.4f);
@@ -88,6 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    //Adding EditText Colors to Regret
     @Override
     public void onColorSelected(int dialogId, int color) {
         switch (dialogId) {
@@ -103,6 +108,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
+    //Adding EditText text to Regret
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
@@ -141,11 +147,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
     private int getBackgroundColor() {
         ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground().mutate();
         return colorDrawable.getColor();
     }
+
 
     //Not in use
     @Override
