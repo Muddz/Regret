@@ -39,7 +39,6 @@ class DoublyLinkedList<E> implements Serializable {
         }
     }
 
-
     public void add(E element) {
         Node newNode = new Node(element);
         if (head == null) {
@@ -110,6 +109,7 @@ class DoublyLinkedList<E> implements Serializable {
         while (tempHead.prev != null) {
             tempHead = tempHead.prev;
         }
+
         while (tempHead.next != null) {
             tempHead = tempHead.next;
             size++;

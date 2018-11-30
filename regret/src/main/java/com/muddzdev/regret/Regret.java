@@ -20,8 +20,8 @@ import android.support.annotation.NonNull;
 
 public class Regret implements OnRegretListener {
 
-    private HistoryManager historyManager;
     private OnRegretListener listener;
+    private HistoryManager historyManager;
 
     public Regret(@NonNull Context context, @NonNull OnRegretListener listener) {
         this.listener = listener;
@@ -48,12 +48,12 @@ public class Regret implements OnRegretListener {
         return historyManager.canRedo();
     }
 
-    public void clear() {
-        historyManager.clear();
+    public boolean isEmpty() {
+        return historyManager.isEmpty();
     }
 
-    public boolean isEmpty(){
-        return historyManager.isEmpty();
+    public void clear() {
+        historyManager.clear();
     }
 
     @Override

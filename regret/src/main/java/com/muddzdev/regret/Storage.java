@@ -24,8 +24,7 @@ class Storage {
 
     public DoublyLinkedList<Record> loadHistory() {
         String value = prefs.getString(KEY_DEFAULT_REGRET_INSTANCE, null);
-        DoublyLinkedList<Record> list = deserialize(value);
-        return list;
+        return deserialize(value);
     }
 
     public boolean hasHistory() {
