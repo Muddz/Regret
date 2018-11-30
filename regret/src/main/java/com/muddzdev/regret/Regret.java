@@ -24,8 +24,8 @@ public class Regret implements OnRegretListener {
     private OnRegretListener listener;
 
     public Regret(@NonNull Context context, @NonNull OnRegretListener listener) {
-        this.historyManager = new HistoryManager(context, this);
         this.listener = listener;
+        this.historyManager = new HistoryManager(context, this);
     }
 
     public void add(@NonNull String key, @NonNull Object value) {
@@ -50,6 +50,10 @@ public class Regret implements OnRegretListener {
 
     public void clear() {
         historyManager.clear();
+    }
+
+    public boolean isEmpty(){
+        return historyManager.isEmpty();
     }
 
     @Override

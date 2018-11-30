@@ -3,30 +3,29 @@ package com.muddzdev.regret;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
-import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
-import java.lang.reflect.Type;
+import android.util.Base64;
+
+import org.apache.commons.lang3.SerializationUtils;
 
 
 class Storage {
 
     private static final String KEY_DEFAULT_REGRET_INSTANCE = "KEY_DEFAULT_REGRET_INSTANCE";
     private SharedPreferences prefs;
-    private Type classType;
 
     public Storage(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
-        classType = new TypeToken<DoublyLinkedList<Record>>() {}.getType();
     }
 
     public void saveHistory(DoublyLinkedList<Record> history) {
-        String json = new Gson().toJson(history, classType);
-        prefs.edit().putString(KEY_DEFAULT_REGRET_INSTANCE, json).apply();
+        String value = serialize(history);
+        prefs.edit().putString(KEY_DEFAULT_REGRET_INSTANCE, value).apply();
     }
 
     public DoublyLinkedList<Record> loadHistory() {
-        String json = prefs.getString(KEY_DEFAULT_REGRET_INSTANCE, null);
-        return new Gson().fromJson(json, classType);
+        String value = prefs.getString(KEY_DEFAULT_REGRET_INSTANCE, null);
+        DoublyLinkedList<Record> list = deserialize(value);
+        return list;
     }
 
     public boolean hasHistory() {
@@ -36,5 +35,16 @@ class Storage {
     public void clear() {
         prefs.edit().remove(KEY_DEFAULT_REGRET_INSTANCE).apply();
     }
+
+    private String serialize(DoublyLinkedList<Record> doublyLinkedList) {
+        byte[] bytes = SerializationUtils.serialize(doublyLinkedList);
+        return Base64.encodeToString(bytes, Base64.DEFAULT);
+    }
+
+    private DoublyLinkedList<Record> deserialize(String string) {
+        byte[] bytes = Base64.decode(string, Base64.DEFAULT);
+        return SerializationUtils.deserialize(bytes);
+    }
+
 
 }

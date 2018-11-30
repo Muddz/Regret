@@ -1,6 +1,8 @@
 package com.muddzdev.regret;
 
-class Record {
+import java.io.Serializable;
+
+class Record implements Serializable {
 
     private String key;
     private Object value;

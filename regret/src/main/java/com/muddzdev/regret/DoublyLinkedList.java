@@ -29,7 +29,7 @@ class DoublyLinkedList<E> implements Serializable {
     private int size;
     private boolean shouldRefreshSize;
 
-    private class Node {
+    private class Node implements Serializable {
         E element;
         Node next = null;
         Node prev = null;
@@ -81,6 +81,7 @@ class DoublyLinkedList<E> implements Serializable {
         head = previousNode;
         return previousNode.element;
     }
+
 
     public boolean canRedo() {
         return head != null && head.next != null;

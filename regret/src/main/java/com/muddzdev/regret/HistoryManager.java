@@ -25,7 +25,7 @@ class HistoryManager {
 
     public void add(String key, Object value) {
         history.add(new Record(key, value));
-        storage.saveHistory(history);
+        save();
         updateCanDoListener();
     }
 
@@ -37,6 +37,7 @@ class HistoryManager {
             Object value = nextRecord.getValue();
             listener.onDo(key, value);
             updateCanDoListener();
+            save();
         }
     }
 
@@ -47,14 +48,15 @@ class HistoryManager {
             Object value = nextRecord.getValue();
             listener.onDo(key, value);
             updateCanDoListener();
+            save();
         }
     }
 
-    public boolean canUndo(){
+    public boolean canUndo() {
         return history.canUndo();
     }
 
-    public boolean canRedo(){
+    public boolean canRedo() {
         return history.canRedo();
     }
 
@@ -62,6 +64,14 @@ class HistoryManager {
         history.clear();
         storage.clear();
         updateCanDoListener();
+    }
+
+    public boolean isEmpty() {
+        return history.isEmpty();
+    }
+
+    private void save(){
+        storage.saveHistory(history);
     }
 
     private void updateCanDoListener() {
