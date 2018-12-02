@@ -31,7 +31,7 @@ The library is simple to use and will persist your history until you clear it ma
     }
 ```
 
-## Installation (NOT PUBLISHED YET!)
+## Installation
 
 Add the dependency in your `build.gradle`
 ```groovy
