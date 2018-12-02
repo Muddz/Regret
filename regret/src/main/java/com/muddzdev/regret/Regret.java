@@ -32,6 +32,15 @@ public class Regret implements OnRegretListener {
         historyManager.add(key, value);
     }
 
+    public void persist(boolean keepState){
+
+    }
+
+
+    public void keepState(boolean keepState){
+
+    }
+
     public void undo() {
         historyManager.undo();
     }
@@ -55,6 +64,7 @@ public class Regret implements OnRegretListener {
     public void clear() {
         historyManager.clear();
     }
+
 
     @Override
     public void onDo(String key, Object value) {
