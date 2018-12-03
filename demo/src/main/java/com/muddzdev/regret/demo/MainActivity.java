@@ -187,7 +187,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     private void loadLastEditTextStyle() {
         SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
-        String text = preferenceManager.getString(KEY_TEXT, null);
+        String text = preferenceManager.getString(KEY_TEXT, "Hello World");
         int textColor = preferenceManager.getInt(KEY_TEXT_COLOR, Color.BLACK);
         int backgroundColor = preferenceManager.getInt(KEY_BACKGROUND_COLOR, Color.WHITE);
         editText.setText(text);
