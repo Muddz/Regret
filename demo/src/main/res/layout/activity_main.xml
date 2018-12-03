@@ -71,7 +71,7 @@
         android:layout_weight="1"
         android:background="#fff"
         android:gravity="center"
-        android:text="Hello World!"
+        android:text="Hello World"
         android:textColor="#000"
         android:textSize="28sp"
         tools:ignore="Autofill,LabelFor,TextFields" />
@@ -96,7 +96,6 @@
             android:textSize="16sp"
             android:textStyle="bold" />
 
-
         <TextView
             android:id="@+id/bcg_color_picker"
             android:layout_width="0dp"
@@ -109,6 +108,4 @@
             android:textSize="16sp"
             android:textStyle="bold" />
     </LinearLayout>
-
-
 </LinearLayout>
