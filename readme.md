@@ -36,7 +36,7 @@ The library is simple to use and will persist your history until you clear it ma
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:regret:1.0.0'  
+    implementation 'com.muddzdev:regret:1.0.1'  
 }
 ```
  ----
