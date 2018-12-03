@@ -2,7 +2,7 @@
 [![](https://img.shields.io/badge/API-16%2B-brightgreen.svg?style=flat)](https://android-arsenal.com/api?level=16)
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/Regret/raw/master/demo.apk)
 
-Regret is a Android library for apps that wants to implement a undo/redo feature.
+Regret is a Android library for apps that wants to implement an undo/redo feature.
 The library is simple to use and will persist your history until you clear it manually and works with all primitive types and any object.
 
 
