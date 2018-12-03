@@ -15,7 +15,7 @@ The library is simple to use and will persist your history until you clear it ma
    regret.add(KEY_TEXT_COLOR, Color.BLACK);
 ```
 
-2) Call `regret.undo()` or `regret.redo()`. Your data will be returned via the callback
+2) Call `regret.undo()` or `regret.redo()`. The data will be returned via the callback
 ```java
 
   @Override
