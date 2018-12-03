@@ -21,7 +21,6 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'com.android.support:design:28.0.0'
-    implementation 'android.arch.lifecycle:extensions:1.1.1'
     implementation 'com.github.danielnilsson9:color-picker-view:1.4.0'
     implementation 'com.muddzdev:regret:1.0.0'
 //    implementation project(':regret')

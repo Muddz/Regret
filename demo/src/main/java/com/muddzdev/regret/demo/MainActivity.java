@@ -1,8 +1,5 @@
 package com.muddzdev.regret.demo;
 
-import android.arch.lifecycle.ViewModelProvider;
-import android.arch.lifecycle.ViewModelProviders;
-import android.arch.lifecycle.ViewModelStoreOwner;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
@@ -24,11 +21,6 @@ import com.muddzdev.regret.Regret;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, OnRegretListener {
 
-    //TODO Refactor demo version
-    //TODO Refactor to AndroidX
-    //TODO Fix TAG message for 1.0.0
-    //TODO Should we implement History list for list mode? 1.1.0 version
-
     private static final String KEY_TEXT = "KEY_TEXT";
     private static final String KEY_BACKGROUND_COLOR = "KEY_BACKGROUND_COLOR";
     private static final String KEY_TEXT_COLOR = "KEY_TEXT_COLOR";
@@ -44,14 +36,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView backgroundColorBtn;
     EditText editText;
     Regret regret;
-    EditTextViewModel viewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        viewModel = ViewModelProviders.of(this).get(EditTextViewModel.class);
         txtColorBtn = findViewById(R.id.txt_color_picker);
         backgroundColorBtn = findViewById(R.id.bcg_color_picker);
         btnUndo = findViewById(R.id.btn_undo);
@@ -61,7 +51,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        loadLastState();
+        loadLastEditTextStyle();
 
         editText.addTextChangedListener(this);
         btnRedo.setOnClickListener(this);
@@ -70,9 +60,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtColorBtn.setOnClickListener(this);
         backgroundColorBtn.setOnClickListener(this);
 
+
+        //Instantiate Regret with context and a listener
         regret = new Regret(this, this);
         if (regret.isEmpty()) {
-            //To avoid adding the same defaults over again and again
+            //Add some values to it. The if-check is to avoid adding the same values again and again in this demo
             regret.add(KEY_TEXT, editText.getText().toString());
             regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
             regret.add(KEY_TEXT_COLOR, Color.BLACK);
@@ -80,7 +72,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //The returned values from the regret.undo() or regret.redo() calls
+    //The returned values when regret.undo() or regret.redo() is called
     @Override
     public void onDo(String key, Object value) {
         switch (key) {
@@ -100,7 +92,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //Enable or disable Undo Redo
+    //This Regret callback keeps track of if you're able to undo or redo, every time a change happens in Regret's history.
     @Override
     public void onCanDo(boolean canUndo, boolean canRedo) {
         btnUndo.setAlpha(canUndo ? 1 : 0.4f);
@@ -110,7 +102,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
 
-    //Adding EditText Colors to Regret
     @Override
     public void onColorSelected(int dialogId, int color) {
         switch (dialogId) {
@@ -127,8 +118,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-
-    //Adding EditText text to Regret
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
@@ -140,7 +129,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
         isUndoing = false;
     }
-
 
     @Override
     public void onClick(View v) {
@@ -169,19 +157,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    private void loadLastState() {
-        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
-        String text = preferenceManager.getString(KEY_TEXT, null);
-        int textColor = preferenceManager.getInt(KEY_TEXT_COLOR, Color.BLACK);
-        int backgroundColor = preferenceManager.getInt(KEY_BACKGROUND_COLOR, Color.WHITE);
-
-        editText.setText(text);
-        editText.setTextColor(textColor);
-        editText.setBackgroundColor(backgroundColor);
-    }
-
     private int getBackgroundColor() {
-        ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground().mutate();
+        ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
         return colorDrawable.getColor();
     }
 
@@ -208,6 +185,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .apply();
     }
 
+    private void loadLastEditTextStyle() {
+        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
+        String text = preferenceManager.getString(KEY_TEXT, null);
+        int textColor = preferenceManager.getInt(KEY_TEXT_COLOR, Color.BLACK);
+        int backgroundColor = preferenceManager.getInt(KEY_BACKGROUND_COLOR, Color.WHITE);
+        editText.setText(text);
+        editText.setTextColor(textColor);
+        editText.setBackgroundColor(backgroundColor);
+    }
 
     //Not in use
     @Override
