@@ -55,7 +55,7 @@ public class Regret implements OnRegretListener {
     public void clear() {
         historyManager.clear();
     }
-    
+
     @Override
     public void onDo(String key, Object value) {
         listener.onDo(key, value);
