@@ -18,26 +18,31 @@ import android.support.annotation.NonNull;
  *       limitations under the License.
  */
 
-public class Regret implements OnRegretListener {
+public class Regret {
 
-    private OnRegretListener listener;
+    private RegretListener listener;
     private HistoryManager historyManager;
 
-    public Regret(@NonNull Context context, @NonNull OnRegretListener listener) {
+    public Regret(@NonNull Context context, @NonNull RegretListener listener) {
         this.listener = listener;
-        this.historyManager = new HistoryManager(context, this);
+        this.historyManager = new HistoryManager(context);
     }
 
     public void add(@NonNull String key, @NonNull Object value) {
         historyManager.add(key, value);
+        updateCanDoListener();
     }
 
     public void undo() {
-        historyManager.undo();
+        Record record = historyManager.undo();
+        updateDoListener(record);
+        updateCanDoListener();
     }
 
     public void redo() {
-        historyManager.redo();
+        Record record = historyManager.redo();
+        updateDoListener(record);
+        updateCanDoListener();
     }
 
     public boolean canUndo() {
@@ -54,16 +59,26 @@ public class Regret implements OnRegretListener {
 
     public void clear() {
         historyManager.clear();
+        updateCanDoListener();
     }
 
-    @Override
-    public void onDo(String key, Object value) {
-        listener.onDo(key, value);
+
+    private void updateCanDoListener() {
+        if (listener != null) {
+            listener.onCanDo(historyManager.canUndo(), historyManager.canRedo());
+        }
     }
 
-    @Override
-    public void onCanDo(boolean canUndo, boolean canRedo) {
-        listener.onCanDo(canUndo, canRedo);
+    private void updateDoListener(Record record) {
+        String key = record.getKey();
+        Object value = record.getValue();
+        if (listener != null) {
+            listener.onDo(key, value);
+        }
     }
 
+    public interface RegretListener {
+        void onDo(String key, Object value);
+        void onCanDo(boolean canUndo, boolean canRedo);
+    }
 }

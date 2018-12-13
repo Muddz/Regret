@@ -16,10 +16,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
-import com.muddzdev.regret.OnRegretListener;
 import com.muddzdev.regret.Regret;
 
-public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, OnRegretListener {
+public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, Regret.RegretListener {
 
     private static final String KEY_TEXT = "KEY_TEXT";
     private static final String KEY_BACKGROUND_COLOR = "KEY_BACKGROUND_COLOR";
@@ -60,7 +59,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtColorBtn.setOnClickListener(this);
         backgroundColorBtn.setOnClickListener(this);
 
-
         //Instantiate Regret with context and a listener
         regret = new Regret(this, this);
         if (regret.isEmpty()) {
@@ -68,6 +66,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             regret.add(KEY_TEXT, editText.getText().toString());
             regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
             regret.add(KEY_TEXT_COLOR, Color.BLACK);
+
         }
     }
 
