@@ -26,6 +26,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:28.0.0'
     implementation 'org.apache.commons:commons-lang3:3.5'
+    implementation 'com.google.code.gson:gson:2.8.5'
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
 
@@ -35,7 +36,7 @@ def siteUrl = 'https://github.com/Muddz/Regret'
 def gitUrl = 'https://github.com/Muddz/Regret.git'
 def developerName = "muddz"
 group = "com.muddzdev"
-version = "1.0.0"
+version = "1.0.2"
 
 install {
     repositories.mavenInstaller {
@@ -109,7 +110,7 @@ bintray {
         websiteUrl = siteUrl
         licenses = ["Apache-2.0"]
         version {
-            name = "1.0.0"
+            name = "1.0.2"
         }
     }
 }

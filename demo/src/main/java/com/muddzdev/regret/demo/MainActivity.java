@@ -66,7 +66,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             regret.add(KEY_TEXT, editText.getText().toString());
             regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
             regret.add(KEY_TEXT_COLOR, Color.BLACK);
-
         }
     }
 

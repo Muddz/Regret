@@ -1,6 +1,8 @@
 package com.muddzdev.regret;
 
 import java.io.Serializable;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /*
@@ -23,7 +25,7 @@ import java.util.NoSuchElementException;
  * This DoublyLinkedList is specifically tailored towards an Undo/Redo use case
  */
 
-class DoublyLinkedList<E> implements Serializable {
+class DoublyLinkedList<E> implements Collection<E>,Serializable {
 
     private Node head;
     private int size;
@@ -39,26 +41,30 @@ class DoublyLinkedList<E> implements Serializable {
         }
     }
 
-    public void add(E element) {
-        Node newNode = new Node(element);
-        if (head == null) {
-            head = newNode;
-        } else if (head.next == null) {
-            newNode.prev = head;
-            head.next = newNode;
-        } else {
-            head.next = null;
-            newNode.prev = head;
-            head.next = newNode;
-            shouldRefreshSize = true;
-        }
 
-        head = newNode;
-        if (shouldRefreshSize) {
-            refreshSize();
-        } else {
-            size++;
-        }
+    @Override
+    public boolean remove(Object o) {
+        return false;
+    }
+
+    @Override
+    public boolean containsAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean addAll(Collection<? extends E> c) {
+        return false;
+    }
+
+    @Override
+    public boolean removeAll(Collection<?> c) {
+        return false;
+    }
+
+    @Override
+    public boolean retainAll(Collection<?> c) {
+        return false;
     }
 
 
@@ -96,6 +102,50 @@ class DoublyLinkedList<E> implements Serializable {
 
     public boolean isEmpty() {
         return head == null;
+    }
+
+    @Override
+    public boolean contains(Object o) {
+        return false;
+    }
+
+    @Override
+    public Iterator<E> iterator() {
+        return null;
+    }
+
+    @Override
+    public Object[] toArray() {
+        return new Object[0];
+    }
+
+    @Override
+    public <T> T[] toArray(T[] a) {
+        return null;
+    }
+
+    @Override
+    public boolean add(E e) {
+        Node newNode = new Node(e);
+        if (head == null) {
+            head = newNode;
+        } else if (head.next == null) {
+            newNode.prev = head;
+            head.next = newNode;
+        } else {
+            head.next = null;
+            newNode.prev = head;
+            head.next = newNode;
+            shouldRefreshSize = true;
+        }
+
+        head = newNode;
+        if (shouldRefreshSize) {
+            refreshSize();
+        } else {
+            size++;
+        }
+        return true;
     }
 
     public void clear() {
