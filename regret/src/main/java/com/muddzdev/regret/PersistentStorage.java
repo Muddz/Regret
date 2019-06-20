@@ -7,26 +7,26 @@ import android.util.Base64;
 import org.apache.commons.lang3.SerializationUtils;
 
 
-class Storage {
+class PersistentStorage {
 
     private static final String KEY_DEFAULT_REGRET_INSTANCE = "KEY_DEFAULT_REGRET_INSTANCE";
     private SharedPreferences prefs;
 
-    public Storage(Context context) {
+    public PersistentStorage(Context context) {
         prefs = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public void saveHistory(DoublyLinkedList<Record> history) {
-        String value = serialize(history);
+    public void saveList(UndoRedoList<Record> undoRedoList) {
+        String value = serialize(undoRedoList);
         prefs.edit().putString(KEY_DEFAULT_REGRET_INSTANCE, value).apply();
     }
 
-    public DoublyLinkedList<Record> loadHistory() {
+    public UndoRedoList<Record> loadList() {
         String value = prefs.getString(KEY_DEFAULT_REGRET_INSTANCE, null);
         return deserialize(value);
     }
 
-    public boolean hasHistory() {
+    public boolean hasList() {
         return prefs.contains(KEY_DEFAULT_REGRET_INSTANCE);
     }
 
@@ -34,12 +34,12 @@ class Storage {
         prefs.edit().remove(KEY_DEFAULT_REGRET_INSTANCE).apply();
     }
 
-    private String serialize(DoublyLinkedList<Record> doublyLinkedList) {
-        byte[] bytes = SerializationUtils.serialize(doublyLinkedList);
+    private String serialize(UndoRedoList<Record> undoRedoList) {
+        byte[] bytes = SerializationUtils.serialize(undoRedoList);
         return Base64.encodeToString(bytes, Base64.DEFAULT);
     }
 
-    private DoublyLinkedList<Record> deserialize(String string) {
+    private UndoRedoList<Record> deserialize(String string) {
         byte[] bytes = Base64.decode(string, Base64.DEFAULT);
         return SerializationUtils.deserialize(bytes);
     }

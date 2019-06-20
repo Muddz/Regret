@@ -21,51 +21,78 @@ import android.support.annotation.NonNull;
 public class Regret {
 
     private RegretListener listener;
-    private HistoryManager historyManager;
+    private UndoRedoManager undoRedoManager;
 
     public Regret(@NonNull Context context, @NonNull RegretListener listener) {
         this.listener = listener;
-        this.historyManager = new HistoryManager(context);
+        this.undoRedoManager = new UndoRedoManager(context);
     }
 
     public void add(@NonNull String key, @NonNull Object value) {
-        historyManager.add(key, value);
+        undoRedoManager.add(key, value);
         updateCanDoListener();
     }
 
+
+    /**
+     * @return the current value
+     */
+    public Object getCurrent() {
+        Record record = undoRedoManager.getCurrent();
+        return record.getValue();
+    }
+
+    /**
+     * undo() returns the previous key-value pair via the callback onDo() in RegretListener
+     */
     public void undo() {
-        Record record = historyManager.undo();
+        Record record = undoRedoManager.undo();
         updateDoListener(record);
         updateCanDoListener();
     }
 
+    /**
+     * redo() returns the next key-value pair via the callback onDo() in RegretListener
+     */
     public void redo() {
-        Record record = historyManager.redo();
+        Record record = undoRedoManager.redo();
         updateDoListener(record);
         updateCanDoListener();
     }
 
+    /**
+     * @return True if a previous-entry exists, else false
+     */
     public boolean canUndo() {
-        return historyManager.canUndo();
+        return undoRedoManager.canUndo();
     }
 
+    /**
+     * @return True if a next-entry exists, else false
+     */
     public boolean canRedo() {
-        return historyManager.canRedo();
+        return undoRedoManager.canRedo();
     }
 
+    /**
+     * @return Whether the undo-redo list has entries or not
+     */
     public boolean isEmpty() {
-        return historyManager.isEmpty();
+        return undoRedoManager.isEmpty();
     }
 
+    /**
+     * Clears the undo-redo list
+     */
     public void clear() {
-        historyManager.clear();
+        undoRedoManager.clear();
         updateCanDoListener();
     }
 
 
     private void updateCanDoListener() {
         if (listener != null) {
-            listener.onCanDo(historyManager.canUndo(), historyManager.canRedo());
+            listener.onCanDo(undoRedoManager.canUndo(), undoRedoManager.canRedo());
         }
     }
 
@@ -78,7 +105,19 @@ public class Regret {
     }
 
     public interface RegretListener {
+        /**
+         * onDo() returns a key-value pair when undo() or redo() is called
+         * @param key   The key to identify the returned value
+         * @param value The value associated with the key
+         */
         void onDo(String key, Object value);
+
+        /**
+         * onCanDo() updates for every call to undo(), redo() or add().
+         * This call is useful for updating the state of UI undo or redo buttons
+         * @param canUndo
+         * @param canRedo
+         */
         void onCanDo(boolean canUndo, boolean canRedo);
     }
 }
