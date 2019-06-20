@@ -25,9 +25,13 @@ public class Regret {
 
     public Regret(@NonNull Context context, @NonNull RegretListener listener) {
         this.listener = listener;
-        this.undoRedoManager = new UndoRedoManager(context);
+        this.undoRedoManager = new UndoRedoManager();
     }
 
+    /**
+     * @param key An identifier for the value
+     * @param value A value associated with the key
+     */
     public void add(@NonNull String key, @NonNull Object value) {
         undoRedoManager.add(key, value);
         updateCanDoListener();

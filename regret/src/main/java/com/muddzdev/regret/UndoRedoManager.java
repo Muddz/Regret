@@ -1,24 +1,15 @@
 package com.muddzdev.regret;
 
-import android.content.Context;
-
 class UndoRedoManager {
 
     private UndoRedoList<Record> undoRedoList;
-    private PersistentStorage persistentStorage;
 
-    public UndoRedoManager(Context context) {
-        this.persistentStorage = new PersistentStorage(context.getApplicationContext());
-        if (persistentStorage.hasList()) {
-            undoRedoList = persistentStorage.loadList();
-        } else {
-            undoRedoList = new UndoRedoList<>();
-        }
+    public UndoRedoManager() {
+        undoRedoList = new UndoRedoList<>();
     }
 
     public void add(String key, Object value) {
         undoRedoList.add(new Record(key, value));
-        saveList();
     }
 
     public Record getCurrent() {
@@ -27,7 +18,6 @@ class UndoRedoManager {
 
     public Record undo() {
         if (undoRedoList.canUndo()) {
-            saveList();
             return undoRedoList.undo();
         }
         return null;
@@ -35,7 +25,6 @@ class UndoRedoManager {
 
     public Record redo() {
         if (undoRedoList.canRedo()) {
-            saveList();
             return undoRedoList.redo();
         }
         return null;
@@ -55,11 +44,10 @@ class UndoRedoManager {
 
     public void clear() {
         undoRedoList.clear();
-        persistentStorage.clear();
     }
 
-    private void saveList() {
-        persistentStorage.saveList(undoRedoList);
+    public String toString() {
+        return undoRedoList.toString();
     }
 
 }
