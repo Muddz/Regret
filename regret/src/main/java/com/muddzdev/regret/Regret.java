@@ -47,7 +47,7 @@ public class Regret {
     }
 
     /**
-     * undo() returns the previous key-value pair via the callback onDo() in RegretListener
+     * Returns the previous key-value pair via the callback onDo() in RegretListener
      */
     public void undo() {
         Record record = undoRedoManager.undo();
@@ -56,7 +56,7 @@ public class Regret {
     }
 
     /**
-     * redo() returns the next key-value pair via the callback onDo() in RegretListener
+     * Returns the next key-value pair via the callback onDo() in RegretListener
      */
     public void redo() {
         Record record = undoRedoManager.redo();

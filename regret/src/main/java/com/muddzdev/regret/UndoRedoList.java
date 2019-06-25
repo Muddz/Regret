@@ -2,13 +2,10 @@ package com.muddzdev.regret;
 
 import android.support.annotation.NonNull;
 
-import java.io.Serializable;
-import java.util.AbstractSequentialList;
-import java.util.ListIterator;
 import java.util.NoSuchElementException;
 
 /*
- *       Copyright 2018 Muddi Walid
+ *       Copyright 2019 Muddi Walid
  *       Licensed under the Apache License, Version 2.0 (the "License");
  *       you may not use this file except in compliance with the License.
  *       You may obtain a copy of the License at
@@ -24,17 +21,18 @@ import java.util.NoSuchElementException;
 
 /**
  * @author Muddi Walid
+ * https://github.com/Muddz/UndoRedoList
  */
 
-class UndoRedoList<E>{
+public class UndoRedoList<E> {
 
     private Node head;
     private Node pointer;
+    private int pointerIndex;
     private int size;
-    private boolean shouldRefreshSize;
 
 
-    private class Node implements Serializable {
+    private class Node {
         E element;
         Node next = null;
         Node prev = null;
@@ -45,29 +43,20 @@ class UndoRedoList<E>{
     }
 
     /**
-     * Adds an element to the collection
+     * Adds an element to the list
      */
-    public boolean add(E element) {
+    public void add(E element) {
         Node newNode = new Node(element);
         if (head == null) {
             head = newNode;
-        } else if (pointer.next == null) {
-            newNode.prev = pointer;
-            pointer.next = newNode;
         } else {
-            pointer.next = null;
             newNode.prev = pointer;
             pointer.next = newNode;
-            shouldRefreshSize = true;
         }
 
         pointer = newNode;
-        if (shouldRefreshSize) {
-            refreshSize();
-        } else {
-            size++;
-        }
-        return true;
+        pointerIndex++;
+        size = pointerIndex;
     }
 
     /**
@@ -81,25 +70,26 @@ class UndoRedoList<E>{
     }
 
     /**
-     * @return The next element in the collection
+     * @return The next element in the list
      */
     public E redo() {
         if (pointer.next == null) {
             throw new NoSuchElementException();
         }
-
+        pointerIndex++;
         Node next = pointer.next;
         pointer = next;
         return next.element;
     }
 
     /**
-     * @return The previous element in the collection
+     * @return The previous element in the list
      */
     public E undo() {
         if (pointer.prev == null) {
             throw new NoSuchElementException();
         }
+        pointerIndex--;
         Node previousNode = pointer.prev;
         pointer = previousNode;
         return previousNode.element;
@@ -121,33 +111,32 @@ class UndoRedoList<E>{
     }
 
     /**
-     * @return The size of the collection
+     * @return The size of the list
      */
     public int size() {
         return size;
     }
 
     /**
-     * @return A boolean for whether the collection is empty or not
+     * @return A boolean for whether the list is empty or not
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
-
     /**
-     * Clears the collection and sets the size to 0
+     * Deletes all elements in the list and sets the size to 0
      */
     public void clear() {
         head = null;
-        tail = null;
         pointer = null;
         size = 0;
+        pointerIndex = 0;
     }
 
 
     /**
-     * @return A string representation of all elements in the collection
+     * @return A string representation of all elements in the list
      */
     @NonNull
     public String toString() {
@@ -161,18 +150,5 @@ class UndoRedoList<E>{
             }
         }
         return sb.append(']').toString();
-    }
-
-    /*
-     This method is only called if we're adding an element between two existing elements.
-     */
-    private void refreshSize() {
-        size = 0;
-        Node tempHead = head;
-        while (tempHead != null) {
-            tempHead = tempHead.next;
-            size++;
-        }
-        shouldRefreshSize = false;
     }
 }
