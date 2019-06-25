@@ -26,10 +26,9 @@ import java.util.NoSuchElementException;
  * @author Muddi Walid
  */
 
-class UndoRedoList<E> extends AbstractSequentialList<E> implements Serializable {
+class UndoRedoList<E>{
 
     private Node head;
-    private Node tail;
     private Node pointer;
     private int size;
     private boolean shouldRefreshSize;
@@ -63,7 +62,6 @@ class UndoRedoList<E> extends AbstractSequentialList<E> implements Serializable 
         }
 
         pointer = newNode;
-        tail = newNode;
         if (shouldRefreshSize) {
             refreshSize();
         } else {
@@ -176,70 +174,5 @@ class UndoRedoList<E> extends AbstractSequentialList<E> implements Serializable 
             size++;
         }
         shouldRefreshSize = false;
-    }
-
-
-    @NonNull
-    @Override
-    public ListIterator<E> listIterator(int index) {
-        return new UndoRedoIterator();
-    }
-
-    private class UndoRedoIterator implements ListIterator<E> {
-
-        private Node tempHead = head;
-        private Node tempTail = tail;
-        private int nextIndex = 0;
-        private int previousIndex = size;
-
-        @Override
-        public boolean hasNext() {
-            return tempHead != null;
-        }
-
-        @Override
-        public E next() {
-            nextIndex++;
-            Node nextNode = tempHead;
-            tempHead = tempHead.next;
-            return nextNode.element;
-        }
-
-        @Override
-        public boolean hasPrevious() {
-            return tempTail != null && tempHead.prev != null;
-        }
-
-        @Override
-        public E previous() {
-            previousIndex--;
-            Node previousNode = tempTail;
-            tempTail = tempTail.prev;
-            return previousNode.element;
-        }
-
-        @Override
-        public int nextIndex() {
-            return nextIndex;
-        }
-
-        @Override
-        public int previousIndex() {
-            return previousIndex;
-        }
-
-        @Override
-        public void set(E e) {
-            UndoRedoList.this.add(e);
-        }
-
-        @Override
-        public void add(E e) {
-            UndoRedoList.this.add(e);
-        }
-
-        @Override
-        public void remove() {
-        }
     }
 }
