@@ -2,6 +2,11 @@ package com.muddzdev.regret;
 
 class UndoRedoManager {
 
+    /*
+    Save to persistant storage
+    https://stackoverflow.com/questions/9111899/how-do-i-build-a-java-type-object-at-runtime-from-a-generic-type-definition-and
+     */
+
     private UndoRedoList<Record> undoRedoList;
 
     public UndoRedoManager() {
