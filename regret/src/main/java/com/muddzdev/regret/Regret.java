@@ -30,7 +30,7 @@ public class Regret {
 
     /**
      * @param key An identifier for the value
-     * @param value A value associated with the key
+     * @param value The value associated with the key
      */
     public void add(@NonNull String key, @NonNull Object value) {
         undoRedoManager.add(key, value);
@@ -119,8 +119,6 @@ public class Regret {
         /**
          * onCanDo() updates for every call to undo(), redo() or add().
          * This call is useful for updating the state of UI undo or redo buttons
-         * @param canUndo
-         * @param canRedo
          */
         void onCanDo(boolean canUndo, boolean canRedo);
     }
