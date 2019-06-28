@@ -40,7 +40,7 @@ Regret is based on the [Undo-Redo data structure](https://github.com/Muddz/UndoR
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:regret:1.0.2'  
+    implementation 'com.muddzdev:regret:1.2.0'  
 }
 ```
  ----
