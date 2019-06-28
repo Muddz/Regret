@@ -6,8 +6,8 @@ import org.junit.Test;
 
 public class UndoRedoManagerTest {
 
-    private UndoRedoManager undoRedoManager;
     private static final int TEST_ENTRIES = 3;
+    private UndoRedoManager undoRedoManager;
 
     @Before
     public void setUp() {
