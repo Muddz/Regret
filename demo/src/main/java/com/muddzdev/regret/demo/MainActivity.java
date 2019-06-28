@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         backgroundColorBtn.setOnClickListener(this);
 
         //Instantiate Regret with context and a listener
-        regret = new Regret(this, this);
+        regret = new Regret(this);
         if (regret.isEmpty()) {
             //Add some values to it. The if-check is to avoid adding the same values again and again in this demo
             regret.add(KEY_TEXT, editText.getText().toString());

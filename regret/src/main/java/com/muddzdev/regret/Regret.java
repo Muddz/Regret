@@ -23,7 +23,7 @@ public class Regret {
     private RegretListener listener;
     private UndoRedoManager undoRedoManager;
 
-    public Regret(@NonNull Context context, @NonNull RegretListener listener) {
+    public Regret(@NonNull RegretListener listener) {
         this.listener = listener;
         this.undoRedoManager = new UndoRedoManager();
     }
