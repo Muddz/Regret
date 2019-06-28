@@ -1,5 +1,7 @@
 package com.muddzdev.regret;
 
+import android.support.annotation.NonNull;
+
 class UndoRedoManager {
 
     /*
@@ -51,8 +53,5 @@ class UndoRedoManager {
         undoRedoList.clear();
     }
 
-    public String toString() {
-        return undoRedoList.toString();
-    }
 
 }

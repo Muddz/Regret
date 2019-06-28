@@ -2,6 +2,7 @@ package com.muddzdev.regret;
 
 import android.support.annotation.NonNull;
 
+import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /*
@@ -151,4 +152,6 @@ public class UndoRedoList<E> {
         }
         return sb.append(']').toString();
     }
+
+
 }
