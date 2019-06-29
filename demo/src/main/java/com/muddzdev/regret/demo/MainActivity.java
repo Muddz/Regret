@@ -50,7 +50,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         toolbar = findViewById(R.id.toolbar);
 
         setSupportActionBar(toolbar);
-        loadLastEditTextStyle();
 
         editText.addTextChangedListener(this);
         btnRedo.setOnClickListener(this);
@@ -60,13 +59,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         backgroundColorBtn.setOnClickListener(this);
 
         //Instantiate Regret with context and a listener
-        regret = new Regret( this);
-        if (regret.isEmpty()) {
-            //Add some values to it. The if-check is to avoid adding the same values again and again in this demo
-            regret.add(KEY_TEXT, editText.getText().toString());
-            regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
-            regret.add(KEY_TEXT_COLOR, Color.BLACK);
-        }
+        regret = new Regret(this);
+        regret.add(KEY_TEXT, editText.getText().toString());
+        regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
+        regret.add(KEY_TEXT_COLOR, Color.BLACK);
     }
 
 
@@ -181,16 +177,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .edit()
                 .putString(KEY_TEXT, editText.getText().toString())
                 .apply();
-    }
-
-    private void loadLastEditTextStyle() {
-        SharedPreferences preferenceManager = PreferenceManager.getDefaultSharedPreferences(this);
-        String text = preferenceManager.getString(KEY_TEXT, "Hello World");
-        int textColor = preferenceManager.getInt(KEY_TEXT_COLOR, Color.BLACK);
-        int backgroundColor = preferenceManager.getInt(KEY_BACKGROUND_COLOR, Color.WHITE);
-        editText.setText(text);
-        editText.setTextColor(textColor);
-        editText.setBackgroundColor(backgroundColor);
     }
 
     //Not in use
