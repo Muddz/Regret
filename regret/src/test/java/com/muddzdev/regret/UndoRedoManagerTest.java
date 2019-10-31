@@ -60,4 +60,12 @@ public class UndoRedoManagerTest {
     }
 
 
+    @Test
+    public void testClearHistory() {
+        undoRedoManager.clear();
+        Assert.assertFalse(undoRedoManager.canUndo());
+        Assert.assertFalse(undoRedoManager.canRedo());
+        Assert.assertTrue(undoRedoManager.isEmpty());
+    }
+
 }

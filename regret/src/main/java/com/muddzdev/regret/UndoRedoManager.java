@@ -1,7 +1,5 @@
 package com.muddzdev.regret;
 
-import android.support.annotation.NonNull;
-
 class UndoRedoManager {
 
     /*

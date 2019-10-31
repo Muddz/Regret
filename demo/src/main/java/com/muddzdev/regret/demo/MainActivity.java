@@ -1,14 +1,14 @@
 package com.muddzdev.regret.demo;
 
-import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -76,9 +76,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case KEY_TEXT_COLOR:
                 editText.setTextColor((Integer) value);
+                Log.d("TAG", "textcolor: " + value);
                 saveTextColor();
                 break;
             case KEY_BACKGROUND_COLOR:
+
+                Log.d("TAG", "baggrund color: " + value);
+
                 editText.setBackgroundColor((Integer) value);
                 saveBackgroundColor();
                 break;

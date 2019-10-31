@@ -1,8 +1,7 @@
 package com.muddzdev.regret;
 
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 
-import java.util.Iterator;
 import java.util.NoSuchElementException;
 
 /*
@@ -101,14 +100,14 @@ public class UndoRedoList<E> {
      * @return A boolean for whether a next element exists
      */
     public boolean canRedo() {
-        return pointer.next != null;
+        return pointer != null && pointer.next != null;
     }
 
     /**
      * @return A boolean for whether a previous element exists
      */
     public boolean canUndo() {
-        return pointer.prev != null;
+        return pointer != null && pointer.prev != null;
     }
 
     /**
