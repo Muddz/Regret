@@ -4,16 +4,15 @@ import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
 import com.muddzdev.regret.Regret;
@@ -27,7 +26,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int COLOR_PICKER_BACKGROUND = 222;
     private boolean isUndoing;
 
-    Toolbar toolbar;
     ImageView btnUndo;
     ImageView btnRedo;
     TextView btnClear;
@@ -47,9 +45,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRedo = findViewById(R.id.btn_redo);
         btnClear = findViewById(R.id.btn_clear);
         editText = findViewById(R.id.edittext);
-        toolbar = findViewById(R.id.toolbar);
-
-        setSupportActionBar(toolbar);
 
         editText.addTextChangedListener(this);
         btnRedo.setOnClickListener(this);
@@ -60,6 +55,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
+
+        //Adding some start values
         regret.add(KEY_TEXT, editText.getText().toString());
         regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
         regret.add(KEY_TEXT_COLOR, Color.BLACK);
@@ -76,13 +73,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 break;
             case KEY_TEXT_COLOR:
                 editText.setTextColor((Integer) value);
-                Log.d("TAG", "textcolor: " + value);
                 saveTextColor();
                 break;
             case KEY_BACKGROUND_COLOR:
-
-                Log.d("TAG", "baggrund color: " + value);
-
                 editText.setBackgroundColor((Integer) value);
                 saveBackgroundColor();
                 break;
@@ -188,10 +181,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void beforeTextChanged(CharSequence s, int start, int count, int after) {
     }
 
+    //Not in use
     @Override
     public void onTextChanged(CharSequence s, int start, int before, int count) {
     }
 
+    //Not in use
     @Override
     public void onDialogDismissed(int dialogId) {
     }

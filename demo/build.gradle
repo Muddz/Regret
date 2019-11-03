@@ -22,6 +22,6 @@ dependencies {
     implementation 'androidx.appcompat:appcompat:1.1.0'
     implementation 'com.google.android.material:material:1.0.0'
     implementation 'com.github.danielnilsson9:color-picker-view:1.4.0'
-    implementation 'com.muddzdev:regret:1.2.1'
-//    implementation project(':regret')
+//    implementation 'com.muddzdev:regret:1.2.1'
+    implementation project(':regret')
 }
