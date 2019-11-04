@@ -56,34 +56,31 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
 
-        //Adding some start values
+        //Add some start/default values
+        regret.add(KEY_TEXT_COLOR, Color.BLACK);
         regret.add(KEY_TEXT, editText.getText().toString());
         regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
-        regret.add(KEY_TEXT_COLOR, Color.BLACK);
     }
 
 
-    //The returned values when regret.undo() or regret.redo() is called
+    //The listener returns Key-Pair when regret.undo() or regret.redo() is called
     @Override
     public void onDo(String key, Object value) {
         switch (key) {
             case KEY_TEXT:
                 editText.setText((CharSequence) value);
-                saveText();
                 break;
             case KEY_TEXT_COLOR:
                 editText.setTextColor((Integer) value);
-                saveTextColor();
                 break;
             case KEY_BACKGROUND_COLOR:
                 editText.setBackgroundColor((Integer) value);
-                saveBackgroundColor();
                 break;
         }
     }
 
 
-    //This Regret callback keeps track of if you're able to undo or redo, every time a change happens in Regret's history.
+    //This listener returns whether its still possible to undo/redo after every add, undo or redo and clear operation
     @Override
     public void onCanDo(boolean canUndo, boolean canRedo) {
         btnUndo.setAlpha(canUndo ? 1 : 0.4f);
@@ -99,12 +96,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case COLOR_PICKER_TEXT_COLOR:
                 editText.setTextColor(color);
                 regret.add(KEY_TEXT_COLOR, color);
-                saveTextColor();
                 break;
             case COLOR_PICKER_BACKGROUND:
                 editText.setBackgroundColor(color);
                 regret.add(KEY_BACKGROUND_COLOR, color);
-                saveBackgroundColor();
                 break;
         }
     }
@@ -115,7 +110,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             String text = s.toString().trim();
             if (!text.isEmpty() || !text.equals("")) {
                 regret.add(KEY_TEXT, text);
-                saveText();
             }
         }
         isUndoing = false;
@@ -143,37 +137,10 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 ColorPickerDialogFragment.newInstance(COLOR_PICKER_TEXT_COLOR, editText.getCurrentTextColor()).show(getFragmentManager(), null);
                 break;
             case R.id.bcg_color_picker:
-                ColorPickerDialogFragment.newInstance(COLOR_PICKER_BACKGROUND, getBackgroundColor()).show(getFragmentManager(), null);
+                ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
+                ColorPickerDialogFragment.newInstance(COLOR_PICKER_BACKGROUND, colorDrawable.getColor()).show(getFragmentManager(), null);
                 break;
         }
-    }
-
-    private int getBackgroundColor() {
-        ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
-        return colorDrawable.getColor();
-    }
-
-
-    private void saveBackgroundColor() {
-        PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(KEY_BACKGROUND_COLOR, getBackgroundColor())
-                .apply();
-    }
-
-    private void saveTextColor() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(KEY_TEXT_COLOR, editText.getCurrentTextColor())
-                .apply();
-    }
-
-    private void saveText() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putString(KEY_TEXT, editText.getText().toString())
-                .apply();
     }
 
     //Not in use
