@@ -8,17 +8,4 @@
         <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
-
-    <style name="TabLayoutStyle">
-        <item name="android:layout_height">wrap_content</item>
-        <item name="android:layout_width">match_parent</item>
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="tabIndicatorHeight">0dp</item>
-        <item name="tabSelectedTextColor">#fff</item>
-        <item name="tabMode">fixed</item>
-        <item name="tabTextColor">#595959</item>
-        <item name="tabGravity">center</item>
-    </style>
-
-
 </resources>
