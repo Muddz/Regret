@@ -12,14 +12,14 @@ Regret is based on the [Undo-Redo data structure](https://github.com/Muddz/UndoR
 
 ## Usage
 
-1) Instantiate `Regret` and add data to it
+1) Instantiate `Regret` and add Key-Value data to it
 ```java
    Regret regret = new Regret(context, this);
    regret.add(KEY_TEXT, editText.getText().toString());
    regret.add(KEY_TEXT_COLOR, Color.BLACK);
 ```
 
-2) Call `regret.undo()` or `regret.redo()`. The data will be returned via the callback
+2) Call `regret.undo()` or `regret.redo()`. The Key-Value data will be returned via the listener
 ```java
 
   @Override
@@ -32,6 +32,17 @@ Regret is based on the [Undo-Redo data structure](https://github.com/Muddz/UndoR
                 editText.setTextColor((Integer) value);
                 break;
         }
+    }
+```
+
+3) Update UI related buttons such as Undo/Redo buttons with the following listener
+```java
+    @Override
+    public void onCanDo(boolean canUndo, boolean canRedo) {
+        btnUndo.setAlpha(canUndo ? 1 : 0.4f);
+        btnRedo.setAlpha(canRedo ? 1 : 0.4f);
+        btnUndo.setEnabled(canUndo);
+        btnRedo.setEnabled(canRedo);
     }
 ```
 
