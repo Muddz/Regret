@@ -19,6 +19,10 @@ import androidx.annotation.NonNull;
 
 public class Regret {
 
+    //TODO should we include an getSize method + testSize method??
+    //Todo Any solutions for non-tracking entries?
+    //TODO Any solutions for entries like when undoing from bacground til text color?
+
     private RegretListener listener;
     private UndoRedoManager undoRedoManager;
 

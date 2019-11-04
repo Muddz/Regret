@@ -8,6 +8,8 @@ import org.junit.Test;
 
 public class UseCaseTest {
 
+    //TODO better naming or include comment about this test
+
     private UndoRedoManager undoRedoManager;
     private static final String TEXT_COLOR_RED = "TEXT_COLOR_RED";
     private static final String TEXT_COLOR_GREEN = "TEXT_COLOR_GREEN";
