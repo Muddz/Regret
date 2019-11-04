@@ -9,7 +9,6 @@ Regret is based on the [Undo-Redo data structure](https://github.com/Muddz/UndoR
 
 
 
-
 ## Usage
 
 1) Instantiate `Regret` and add Key-Value data to it
