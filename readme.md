@@ -11,14 +11,14 @@ Regret is based on the [Undo-Redo data structure](https://github.com/Muddz/UndoR
 
 ## Usage
 
-1) Instantiate `Regret` and add Key-Value data to it
+1) Instantiate `Regret` and add key-value data to it
 ```java
    Regret regret = new Regret(context, this);
    regret.add(KEY_TEXT, editText.getText().toString());
    regret.add(KEY_TEXT_COLOR, Color.BLACK);
 ```
 
-2) Call `regret.undo()` or `regret.redo()`. The Key-Value data will be returned via the listener
+2) Call `regret.undo()` or `regret.redo()`. The key-value data will be returned via the listener
 ```java
 
   @Override
