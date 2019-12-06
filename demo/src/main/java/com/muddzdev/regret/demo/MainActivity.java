@@ -1,6 +1,5 @@
 package com.muddzdev.regret.demo;
 
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
@@ -55,11 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
-
-        //Adding some start values
-        regret.add(KEY_TEXT, editText.getText().toString());
-        regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
-        regret.add(KEY_TEXT_COLOR, Color.BLACK);
     }
 
 
@@ -94,16 +88,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onColorSelected(int dialogId, int color) {
+    public void onColorSelected(int dialogId, int newColor) {
         switch (dialogId) {
             case COLOR_PICKER_TEXT_COLOR:
-                editText.setTextColor(color);
-                regret.add(KEY_TEXT_COLOR, color);
+                regret.add(KEY_TEXT_COLOR, editText.getCurrentTextColor(), newColor);
+                editText.setTextColor(newColor);
                 saveTextColor();
                 break;
             case COLOR_PICKER_BACKGROUND:
-                editText.setBackgroundColor(color);
-                regret.add(KEY_BACKGROUND_COLOR, color);
+                ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
+                regret.add(KEY_BACKGROUND_COLOR, colorDrawable.getColor(), newColor);
+                editText.setBackgroundColor(newColor);
                 saveBackgroundColor();
                 break;
         }
@@ -114,7 +109,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isUndoing) {
             String text = s.toString().trim();
             if (!text.isEmpty() || !text.equals("")) {
-                regret.add(KEY_TEXT, text);
+                regret.add(KEY_TEXT, editText.getText().toString(), text);
                 saveText();
             }
         }

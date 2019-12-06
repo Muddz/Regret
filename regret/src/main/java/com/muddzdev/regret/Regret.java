@@ -31,15 +31,15 @@ public class Regret {
         this.undoRedoManager = new UndoRedoManager();
     }
 
+
     /**
      * @param key An identifier for the value
-     * @param value The value associated with the key
+     * @param oldValue The value associated with the key
      */
-    public void add(@NonNull String key, @NonNull Object value) {
-        undoRedoManager.add(key, value);
+    public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
+        undoRedoManager.add(key, oldValue, newValue);
         updateCanDoListener();
     }
-
 
     /**
      * @return the current value
@@ -114,6 +114,7 @@ public class Regret {
     public interface RegretListener {
         /**
          * onDo() returns a key-value pair when undo() or redo() is called
+         *
          * @param key   The key to identify the returned value
          * @param value The value associated with the key
          */
