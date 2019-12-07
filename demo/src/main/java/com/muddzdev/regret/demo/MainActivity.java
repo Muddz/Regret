@@ -1,9 +1,7 @@
 package com.muddzdev.regret.demo;
 
-import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.view.View;
@@ -16,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
 import com.muddzdev.regret.Regret;
+
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, Regret.RegretListener {
 
@@ -55,11 +54,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
-
-        //Add some start/default values
-        regret.add(KEY_TEXT_COLOR, Color.BLACK);
-        regret.add(KEY_TEXT, editText.getText().toString());
-        regret.add(KEY_BACKGROUND_COLOR, Color.WHITE);
     }
 
 
@@ -91,15 +85,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 
     @Override
-    public void onColorSelected(int dialogId, int color) {
+    public void onColorSelected(int dialogId, int newColor) {
         switch (dialogId) {
             case COLOR_PICKER_TEXT_COLOR:
-                editText.setTextColor(color);
-                regret.add(KEY_TEXT_COLOR, color);
+                regret.add(KEY_TEXT_COLOR, editText.getCurrentTextColor(), newColor);
+                editText.setTextColor(newColor);
                 break;
             case COLOR_PICKER_BACKGROUND:
-                editText.setBackgroundColor(color);
-                regret.add(KEY_BACKGROUND_COLOR, color);
+                ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
+                regret.add(KEY_BACKGROUND_COLOR, colorDrawable.getColor(), newColor);
+                editText.setBackgroundColor(newColor);
                 break;
         }
     }
@@ -109,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         if (!isUndoing) {
             String text = s.toString().trim();
             if (!text.isEmpty() || !text.equals("")) {
-                regret.add(KEY_TEXT, text);
+                regret.add(KEY_TEXT, editText.getText().toString(), text);
             }
         }
         isUndoing = false;
@@ -120,7 +115,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_clear:
                 regret.clear();
-                PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
                 Toast.makeText(this, "History cleared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_undo:

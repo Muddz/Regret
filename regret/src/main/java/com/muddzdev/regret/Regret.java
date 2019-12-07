@@ -18,10 +18,11 @@ import androidx.annotation.NonNull;
  */
 
 public class Regret {
-
-    //TODO should we include an getSize method + testSize method??
-    //Todo Any solutions for non-tracking entries?
-    //TODO Any solutions for entries like when undoing from bacground til text color?
+    //TODO non trackable values
+    //TODO new add() method support
+    //TODO up libray level and dependcie versions
+    //TODO update tests to match the new add methods algortihm
+    //TODO tests if photoshop and MC Office behaves the same way as Regret
 
     private RegretListener listener;
     private UndoRedoManager undoRedoManager;
@@ -32,14 +33,14 @@ public class Regret {
     }
 
     /**
-     * @param key An identifier for the value
-     * @param value The value associated with the key
+     * @param key      an identifier for the values
+     * @param oldValue the old or current value
+     * @param newValue the new value
      */
-    public void add(@NonNull String key, @NonNull Object value) {
-        undoRedoManager.add(key, value);
+    public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
+        undoRedoManager.add(key, oldValue, newValue);
         updateCanDoListener();
     }
-
 
     /**
      * @return the current value
@@ -50,7 +51,7 @@ public class Regret {
     }
 
     /**
-     * Returns the previous key-value pair via the callback onDo() in RegretListener
+     * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
         Record record = undoRedoManager.undo();
@@ -59,7 +60,7 @@ public class Regret {
     }
 
     /**
-     * Returns the next key-value pair via the callback onDo() in RegretListener
+     * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
         Record record = undoRedoManager.redo();
@@ -68,28 +69,28 @@ public class Regret {
     }
 
     /**
-     * @return True if a previous-entry exists, else false
+     * @return true if a previous-element exists, else false
      */
     public boolean canUndo() {
         return undoRedoManager.canUndo();
     }
 
     /**
-     * @return True if a next-entry exists, else false
+     * @return true if a next-element exists, else false
      */
     public boolean canRedo() {
         return undoRedoManager.canRedo();
     }
 
     /**
-     * @return Whether the undo-redo list has entries or not
+     * @return true if the collection is empty and size = 0, else false
      */
     public boolean isEmpty() {
         return undoRedoManager.isEmpty();
     }
 
     /**
-     * Clears the undo-redo list
+     * Clears and removes all elements in the collection
      */
     public void clear() {
         undoRedoManager.clear();
@@ -113,15 +114,15 @@ public class Regret {
 
     public interface RegretListener {
         /**
-         * onDo() returns a key-value pair when undo() or redo() is called
-         * @param key   The key to identify the returned value
-         * @param value The value associated with the key
+         * Returns a key-value pair when {@link #undo()} or {@link #redo()} is called
+         * @param key   the key to identify the returned value
+         * @param value the value associated with the key
          */
         void onDo(String key, Object value);
 
         /**
-         * onCanDo() updates for every call to undo(), redo() or add().
-         * This call is useful for updating the state of UI undo or redo buttons
+         * onCanDo() updates for every call to {@link #undo()}, {@link #redo()} or {@link #add(String, Object, Object)}.
+         * This callback is specifically useful for updating the states of undo and redo buttons.
          */
         void onCanDo(boolean canUndo, boolean canRedo);
     }

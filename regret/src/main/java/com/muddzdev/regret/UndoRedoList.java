@@ -53,7 +53,6 @@ public class UndoRedoList<E> {
             newNode.prev = pointer;
             pointer.next = newNode;
         }
-
         pointer = newNode;
         pointerIndex++;
         size = pointerIndex;

@@ -8,8 +8,9 @@ class UndoRedoManager {
         undoRedoList = new UndoRedoList<>();
     }
 
-    public void add(String key, Object value) {
-        undoRedoList.add(new Record(key, value));
+    public void add(String key, Object oldValue, Object newValue) {
+        undoRedoList.add(new Record(key, oldValue));
+        undoRedoList.add(new Record(key, newValue));
     }
 
     public Record getCurrent() {
