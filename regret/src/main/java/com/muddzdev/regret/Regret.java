@@ -1,5 +1,7 @@
 package com.muddzdev.regret;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 /*
@@ -18,19 +20,30 @@ import androidx.annotation.NonNull;
  */
 
 public class Regret {
-    //TODO non trackable values
+
     //TODO new add() method support
-    //TODO up libray level and dependcie versions
     //TODO update tests to match the new add methods algortihm
     //TODO tests if photoshop and MC Office behaves the same way as Regret
 
     private RegretListener listener;
     private UndoRedoManager undoRedoManager;
 
+
     public Regret(@NonNull RegretListener listener) {
         this.listener = listener;
         this.undoRedoManager = new UndoRedoManager();
+        updateCanDoListener();
     }
+
+
+    /**
+     * @param key   an identifier for the value
+     * @param value the value associated with the key
+     */
+//    public void add(@NonNull String key, @NonNull Object value) {
+//        undoRedoManager.add(key, value);
+//        updateCanDoListener();
+//    }
 
     /**
      * @param key      an identifier for the values
@@ -39,32 +52,46 @@ public class Regret {
      */
     public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
         undoRedoManager.add(key, oldValue, newValue);
+        Log.d("XXX", "Add: " + "  Key: " + key + "  oldValue: " + oldValue + "  newValue: " + newValue);
         updateCanDoListener();
     }
 
     /**
      * @return the current value
      */
-    public Object getCurrent() {
-        Record record = undoRedoManager.getCurrent();
-        return record.getValue();
+    public Record getCurrent() {
+        return undoRedoManager.getCurrent();
     }
 
     /**
      * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
-        Record record = undoRedoManager.undo();
-        updateDoListener(record);
+        if (undoRedoManager.canUndo()) {
+            Record record = undoRedoManager.undo();
+            updateDoListener(record);
+        }
+
+        if (undoRedoManager.canUndo()) {
+            Record record = undoRedoManager.undo();
+            updateDoListener(record);
+        }
         updateCanDoListener();
+//        Log.d("XXX", "UNDO   Key: " + record.getKey() + "  Value: " + record.getValue());
     }
 
     /**
      * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
-        Record record = undoRedoManager.redo();
-        updateDoListener(record);
+        if (undoRedoManager.canRedo()) {
+            Record record = undoRedoManager.redo();
+            updateDoListener(record);
+        }
+        if (undoRedoManager.canRedo()) {
+            Record record = undoRedoManager.redo();
+            updateDoListener(record);
+        }
         updateCanDoListener();
     }
 
@@ -115,6 +142,7 @@ public class Regret {
     public interface RegretListener {
         /**
          * Returns a key-value pair when {@link #undo()} or {@link #redo()} is called
+         *
          * @param key   the key to identify the returned value
          * @param value the value associated with the key
          */

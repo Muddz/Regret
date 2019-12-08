@@ -2,7 +2,7 @@ package com.muddzdev.regret;
 
 import java.io.Serializable;
 
-class Record implements Serializable {
+class Record  {
 
     private String key;
     private Object value;
@@ -11,12 +11,12 @@ class Record implements Serializable {
         this.key = key;
         this.value = value;
     }
+    public String getKey() {
+        return key;
+    }
 
     public Object getValue() {
         return value;
     }
 
-    public String getKey() {
-        return key;
-    }
 }

@@ -26,13 +26,13 @@ public class DemoTest {
 
     @Test
     public void testUndoRedo() {
-        Assert.assertEquals(Color.WHITE, undoRedoManager.undo().getValue());
-        Assert.assertEquals(Color.GREEN, undoRedoManager.undo().getValue());
-        Assert.assertEquals(Color.RED, undoRedoManager.undo().getValue());
+        Assert.assertEquals(Color.WHITE, undoRedoManager.undo().getOldValue());
+        Assert.assertEquals(Color.GREEN, undoRedoManager.undo().getOldValue());
+        Assert.assertEquals(Color.RED, undoRedoManager.undo().getOldValue());
 
-        Assert.assertEquals(Color.GREEN, undoRedoManager.redo().getValue());
-        Assert.assertEquals(Color.WHITE, undoRedoManager.redo().getValue());
-        Assert.assertEquals(Color.BLACK, undoRedoManager.redo().getValue());
+        Assert.assertEquals(Color.GREEN, undoRedoManager.redo().getOldValue());
+        Assert.assertEquals(Color.WHITE, undoRedoManager.redo().getOldValue());
+        Assert.assertEquals(Color.BLACK, undoRedoManager.redo().getOldValue());
     }
 
 }

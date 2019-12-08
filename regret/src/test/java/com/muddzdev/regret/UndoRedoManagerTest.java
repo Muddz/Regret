@@ -23,16 +23,16 @@ public class UndoRedoManagerTest {
         while (undoRedoManager.canUndo()) {
             undoRedoManager.undo();
         }
-        Assert.assertEquals(1, undoRedoManager.redo().getValue());
-        Assert.assertEquals(2, undoRedoManager.redo().getValue());
-        Assert.assertEquals(3, undoRedoManager.redo().getValue());
+        Assert.assertEquals(1, undoRedoManager.redo().getOldValue());
+        Assert.assertEquals(2, undoRedoManager.redo().getOldValue());
+        Assert.assertEquals(3, undoRedoManager.redo().getOldValue());
     }
 
     @Test
     public void testUndo() {
-        Assert.assertEquals(2, undoRedoManager.undo().getValue());
-        Assert.assertEquals(1, undoRedoManager.undo().getValue());
-        Assert.assertEquals(0, undoRedoManager.undo().getValue());
+        Assert.assertEquals(2, undoRedoManager.undo().getOldValue());
+        Assert.assertEquals(1, undoRedoManager.undo().getOldValue());
+        Assert.assertEquals(0, undoRedoManager.undo().getOldValue());
     }
 
     @Test
@@ -56,7 +56,7 @@ public class UndoRedoManagerTest {
     @Test
     public void testGetCurrentValue() {
         Record record = undoRedoManager.getCurrent();
-        Assert.assertEquals(TEST_ENTRIES, record.getValue());
+        Assert.assertEquals(TEST_ENTRIES, record.getOldValue());
     }
 
 

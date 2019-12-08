@@ -17,6 +17,32 @@ class UndoRedoManager {
         return undoRedoList.getCurrent();
     }
 
+//    public Record undo() {
+//        if (undoRedoList.canUndo()) {
+//            Record currentRecord = getCurrent();
+//            Record previousRecord = undoRedoList.undo();
+//            if (currentRecord.getKey().equals(previousRecord.getKey())) {
+//                return previousRecord;
+//            } else if (undoRedoList.canUndo()) {
+//                return undoRedoList.undo();
+//            }
+//        }
+//        return null;
+//    }
+//
+//    public Record redo() {
+//        if (undoRedoList.canRedo()) {
+//            Record currentRecord = getCurrent();
+//            Record nextRecord = undoRedoList.redo();
+//            if (currentRecord.getKey().equals(nextRecord.getKey())) {
+//                return nextRecord;
+//            } else if (undoRedoList.canRedo()) {
+//                return undoRedoList.redo();
+//            }
+//        }
+//        return null;
+//    }
+
     public Record undo() {
         if (undoRedoList.canUndo()) {
             return undoRedoList.undo();

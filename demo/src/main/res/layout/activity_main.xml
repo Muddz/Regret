@@ -11,6 +11,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="end|center_vertical"
         android:background="#616161"
+        android:id="@+id/toolbar"
         android:gravity="center_vertical"
         android:orientation="horizontal"
         android:padding="8dp">

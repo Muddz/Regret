@@ -69,7 +69,7 @@ public class UndoRedoList<E> {
     }
 
     /**
-     * @return The next element in the list
+     * @return Moves the pointer to the next element in the list
      */
     public E redo() {
         if (pointer.next == null) {
@@ -82,7 +82,7 @@ public class UndoRedoList<E> {
     }
 
     /**
-     * @return The previous element in the list
+     * @return Moves the pointer to the previous element in the list
      */
     public E undo() {
         if (pointer.prev == null) {
