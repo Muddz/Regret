@@ -1,8 +1,6 @@
 package com.muddzdev.regret;
 
-import java.io.Serializable;
-
-class Record  {
+class Record {
 
     private String key;
     private Object value;
@@ -11,6 +9,7 @@ class Record  {
         this.key = key;
         this.value = value;
     }
+
     public String getKey() {
         return key;
     }

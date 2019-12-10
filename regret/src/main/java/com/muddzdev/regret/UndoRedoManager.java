@@ -9,53 +9,75 @@ class UndoRedoManager {
     }
 
     public void add(String key, Object oldValue, Object newValue) {
-        undoRedoList.add(new Record(key, oldValue));
-        undoRedoList.add(new Record(key, newValue));
+
+        Record oldRecord = new Record(key, oldValue);
+        Record newRecord = new Record(key, newValue);
+
+        //TODO implement this logic in UndoRedoList
+
+        if (undoRedoList.isEmpty()) {
+            undoRedoList.add(oldRecord);
+            undoRedoList.add(newRecord);
+        } else if (getCurrent().getKey().equals(oldRecord.getKey())) {
+            undoRedoList.add(newRecord);
+        } else {
+            undoRedoList.add(oldRecord);
+            undoRedoList.add(newRecord);
+        }
+
     }
+
 
     public Record getCurrent() {
         return undoRedoList.getCurrent();
     }
 
-//    public Record undo() {
-//        if (undoRedoList.canUndo()) {
-//            Record currentRecord = getCurrent();
-//            Record previousRecord = undoRedoList.undo();
-//            if (currentRecord.getKey().equals(previousRecord.getKey())) {
-//                return previousRecord;
-//            } else if (undoRedoList.canUndo()) {
-//                return undoRedoList.undo();
-//            }
-//        }
-//        return null;
-//    }
-//
-//    public Record redo() {
-//        if (undoRedoList.canRedo()) {
-//            Record currentRecord = getCurrent();
-//            Record nextRecord = undoRedoList.redo();
-//            if (currentRecord.getKey().equals(nextRecord.getKey())) {
-//                return nextRecord;
-//            } else if (undoRedoList.canRedo()) {
-//                return undoRedoList.redo();
-//            }
-//        }
-//        return null;
-//    }
-
     public Record undo() {
         if (undoRedoList.canUndo()) {
-            return undoRedoList.undo();
+
+            //TODO implement this logic in UndoRedoList
+
+            Record currentRecord = getCurrent();
+            Record nextRecord = undoRedoList.undo();
+            if (currentRecord.getKey().equals(nextRecord.getKey())) {
+                return nextRecord;
+            } else if (undoRedoList.canUndo()) {
+                return undoRedoList.undo();
+            }
         }
         return null;
     }
 
     public Record redo() {
         if (undoRedoList.canRedo()) {
-            return undoRedoList.redo();
+
+            //TODO implement this logic in UndoRedoList
+
+            Record currentRecord = getCurrent();
+            Record nextRecord = undoRedoList.redo();
+            if (currentRecord.getKey().equals(nextRecord.getKey())) {
+                return nextRecord;
+            } else if (undoRedoList.canRedo()) {
+                return undoRedoList.redo();
+            }
         }
         return null;
     }
+
+
+//    public Record undo() {
+//        if (undoRedoList.canUndo()) {
+//            return undoRedoList.undo();
+//        }
+//        return null;
+//    }
+
+//    public Record redo() {
+//        if (undoRedoList.canRedo()) {
+//            return undoRedoList.redo();
+//        }
+//        return null;
+//    }
 
     public boolean canUndo() {
         return undoRedoList.canUndo();

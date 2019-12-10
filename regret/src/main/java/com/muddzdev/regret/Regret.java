@@ -1,7 +1,5 @@
 package com.muddzdev.regret;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 /*
@@ -35,16 +33,6 @@ public class Regret {
         updateCanDoListener();
     }
 
-
-    /**
-     * @param key   an identifier for the value
-     * @param value the value associated with the key
-     */
-//    public void add(@NonNull String key, @NonNull Object value) {
-//        undoRedoManager.add(key, value);
-//        updateCanDoListener();
-//    }
-
     /**
      * @param key      an identifier for the values
      * @param oldValue the old or current value
@@ -52,7 +40,6 @@ public class Regret {
      */
     public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
         undoRedoManager.add(key, oldValue, newValue);
-        Log.d("XXX", "Add: " + "  Key: " + key + "  oldValue: " + oldValue + "  newValue: " + newValue);
         updateCanDoListener();
     }
 
@@ -67,15 +54,8 @@ public class Regret {
      * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
-        if (undoRedoManager.canUndo()) {
-            Record record = undoRedoManager.undo();
-            updateDoListener(record);
-        }
-
-        if (undoRedoManager.canUndo()) {
-            Record record = undoRedoManager.undo();
-            updateDoListener(record);
-        }
+        Record record = undoRedoManager.undo();
+        updateDoListener(record);
         updateCanDoListener();
 //        Log.d("XXX", "UNDO   Key: " + record.getKey() + "  Value: " + record.getValue());
     }
@@ -84,14 +64,8 @@ public class Regret {
      * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
-        if (undoRedoManager.canRedo()) {
-            Record record = undoRedoManager.redo();
-            updateDoListener(record);
-        }
-        if (undoRedoManager.canRedo()) {
-            Record record = undoRedoManager.redo();
-            updateDoListener(record);
-        }
+        Record record = undoRedoManager.redo();
+        updateDoListener(record);
         updateCanDoListener();
     }
 
@@ -110,14 +84,14 @@ public class Regret {
     }
 
     /**
-     * @return true if the collection is empty and size = 0, else false
+     * @return true if the collection is empty else false
      */
     public boolean isEmpty() {
         return undoRedoManager.isEmpty();
     }
 
     /**
-     * Clears and removes all elements in the collection
+     * Deletes all elements in the collection
      */
     public void clear() {
         undoRedoManager.clear();
