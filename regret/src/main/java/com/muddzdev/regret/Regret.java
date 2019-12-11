@@ -46,7 +46,7 @@ public class Regret {
     /**
      * @return the current value
      */
-    public Record getCurrent() {
+    public UndoRedoList.Record getCurrent() {
         return undoRedoManager.getCurrent();
     }
 
@@ -54,7 +54,7 @@ public class Regret {
      * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
-        Record record = undoRedoManager.undo();
+        UndoRedoList.Record record = undoRedoManager.undo();
         updateDoListener(record);
         updateCanDoListener();
 //        Log.d("XXX", "UNDO   Key: " + record.getKey() + "  Value: " + record.getValue());
@@ -64,7 +64,7 @@ public class Regret {
      * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
-        Record record = undoRedoManager.redo();
+        UndoRedoList.Record record = undoRedoManager.redo();
         updateDoListener(record);
         updateCanDoListener();
     }
@@ -105,9 +105,9 @@ public class Regret {
         }
     }
 
-    private void updateDoListener(Record record) {
-        String key = record.getKey();
-        Object value = record.getValue();
+    private void updateDoListener(UndoRedoList.Record record) {
+        String key = record.key;
+        Object value = record.value;
         if (listener != null) {
             listener.onDo(key, value);
         }

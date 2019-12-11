@@ -3,6 +3,7 @@ package com.muddzdev.regret;
 import android.util.Log;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.NoSuchElementException;
 
@@ -26,121 +27,113 @@ import java.util.NoSuchElementException;
  * https://github.com/Muddz/UndoRedoList
  */
 
-public class UndoRedoList<E> {
+public class UndoRedoList {
 
     private Node head;
     private Node pointer;
     private int pointerIndex;
     private int size;
 
+    public class Record {
+        String key;
+        Object value;
 
-    private class Node {
-        E element;
-        Node next = null;
-        Node prev = null;
+        Record(String key, Object value) {
+            this.key = key;
+            this.value = value;
+        }
 
-        Node(E element) {
-            this.element = element;
+        @Override
+        public boolean equals(@Nullable Object obj) {
+            return
+                    obj instanceof Record && ((Record) obj).key.equals(key) && ((Record) obj).value.equals(value);
         }
     }
+
+
+    private class Node {
+        Record record;
+        Node next = null;
+        Node prev = null;
+        Node(Record record) {
+            this.record = record;
+        }
+    }
+
 
     /**
      * Adds an element to the list
      */
-    public void add(E element) {
-        Node newNode = new Node(element);
+    public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
+        Node oldNode = new Node(new Record(key, oldValue));
+        Node newNode = new Node(new Record(key, newValue));
+
         if (head == null) {
-            head = newNode;
-        } else {
-            newNode.prev = pointer;
-            pointer.next = newNode;
+            oldNode.next = newNode;
+            newNode.prev = oldNode;
+            head = oldNode;
+        } else if (!oldNode.record.equals(newNode.record)) {
+            if (pointer.record.key.equals(oldNode.record.key)) {
+                if (pointer.record.equals(oldNode.record)) {
+                    newNode.prev = pointer;
+                    pointer.next = newNode;
+                }
+            } else {
+                oldNode.prev = pointer;
+                pointer.next = oldNode;
+                oldNode.next = newNode;
+                newNode.prev = oldNode;
+            }
         }
         pointer = newNode;
         pointerIndex++;
         size = pointerIndex;
     }
 
-
-    /**
-     * Adds an element to the list
-     */
-//    public void add(E element) {
-//        Node newNode = new Node(element);
-//        if (head == null) {
-//            head = newNode;
-//        } else {
-//
-//            //TODO When there is a difference between last added key and newst added key, just replace them instead of adding them sequentielly
-//
-//            if (newNode.element instanceof Record && pointer.element instanceof Record) {
-//                if (!((Record) newNode.element).getKey().equals(((Record) pointer.element).getKey())) {
-//
-//                    //Todo if different keys between last added and newly added... do something
-//                    Log.d("XXX","1");
-//                    newNode.prev = pointer.prev;
-//                    pointer = newNode;
-//                    return;
-//
-//                }else{
-//                    Log.d("XXX","2");
-//                    newNode.prev = pointer;
-//                    pointer.next = newNode;
-//                }
-//            }
-//        }
-//
-//            newNode.prev = pointer;
-//            pointer.next = newNode;
-//
-//            pointer = newNode;
-//            pointerIndex++;
-//            size = pointerIndex;
-//        }
-//    }
-
-    public E getPrevious() {
+    public Record getPrevious() {
         if (pointer == null) {
             throw new NoSuchElementException();
         }
-        return pointer.prev.element;
+        return pointer.prev.record;
     }
 
-    public E getNext() {
+    public Record getNext() {
         if (pointer == null) {
             throw new NoSuchElementException();
         }
-        return pointer.next.element;
+        return pointer.next.record;
     }
 
-    public E getCurrent() {
+    public Record getCurrent() {
         if (pointer == null) {
             throw new NoSuchElementException();
         }
-        return pointer.element;
+        return pointer.record;
     }
 
     /**
      * @return Moves the pointer to the next element in the list
      */
-    public E redo() {
+    public Record redo() {
         if (pointer.next == null) {
             throw new NoSuchElementException();
         }
         pointerIndex++;
         pointer = pointer.next;
-        return pointer.element;
+        return pointer.record;
     }
 
     /**
      * @return Moves the pointer to the previous element in the list
      */
-    public E undo() {
+    public Record undo() {
         if (pointer.prev == null) {
             throw new NoSuchElementException();
         }
         pointerIndex--;
         pointer = pointer.prev;
-        return pointer.element;
+
+        return pointer.record;
     }
 
 
@@ -191,7 +184,7 @@ public class UndoRedoList<E> {
         StringBuilder sb = new StringBuilder().append('[');
         Node tempHead = head;
         while (tempHead != null) {
-            sb.append(tempHead.element);
+            sb.append(tempHead.record);
             tempHead = tempHead.next;
             if (tempHead != null) {
                 sb.append(',').append(' ');
