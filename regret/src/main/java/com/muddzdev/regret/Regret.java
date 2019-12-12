@@ -1,5 +1,7 @@
 package com.muddzdev.regret;
 
+import android.util.Log;
+
 import androidx.annotation.NonNull;
 
 /*
@@ -19,17 +21,15 @@ import androidx.annotation.NonNull;
 
 public class Regret {
 
-    //TODO new add() method support
     //TODO update tests to match the new add methods algortihm
     //TODO tests if photoshop and MC Office behaves the same way as Regret
 
+    private UndoRedoList undoRedoList;
     private RegretListener listener;
-    private UndoRedoManager undoRedoManager;
-
 
     public Regret(@NonNull RegretListener listener) {
         this.listener = listener;
-        this.undoRedoManager = new UndoRedoManager();
+        this.undoRedoList = new UndoRedoList();
         updateCanDoListener();
     }
 
@@ -39,7 +39,7 @@ public class Regret {
      * @param newValue the new value
      */
     public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
-        undoRedoManager.add(key, oldValue, newValue);
+        undoRedoList.add(key, oldValue, newValue);
         updateCanDoListener();
     }
 
@@ -47,24 +47,23 @@ public class Regret {
      * @return the current value
      */
     public UndoRedoList.Record getCurrent() {
-        return undoRedoManager.getCurrent();
+        return undoRedoList.getCurrent();
     }
 
     /**
      * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
-        UndoRedoList.Record record = undoRedoManager.undo();
+        UndoRedoList.Record record = undoRedoList.undo();
         updateDoListener(record);
         updateCanDoListener();
-//        Log.d("XXX", "UNDO   Key: " + record.getKey() + "  Value: " + record.getValue());
     }
 
     /**
      * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
-        UndoRedoList.Record record = undoRedoManager.redo();
+        UndoRedoList.Record record = undoRedoList.redo();
         updateDoListener(record);
         updateCanDoListener();
     }
@@ -73,35 +72,36 @@ public class Regret {
      * @return true if a previous-element exists, else false
      */
     public boolean canUndo() {
-        return undoRedoManager.canUndo();
+        return undoRedoList.canUndo();
     }
 
     /**
      * @return true if a next-element exists, else false
      */
     public boolean canRedo() {
-        return undoRedoManager.canRedo();
+        return undoRedoList.canRedo();
     }
 
     /**
      * @return true if the collection is empty else false
      */
     public boolean isEmpty() {
-        return undoRedoManager.isEmpty();
+        return undoRedoList.isEmpty();
     }
 
     /**
      * Deletes all elements in the collection
      */
     public void clear() {
-        undoRedoManager.clear();
+        Log.d("XXX", undoRedoList.toString());
+        undoRedoList.clear();
         updateCanDoListener();
     }
 
 
     private void updateCanDoListener() {
         if (listener != null) {
-            listener.onCanDo(undoRedoManager.canUndo(), undoRedoManager.canRedo());
+            listener.onCanDo(undoRedoList.canUndo(), undoRedoList.canRedo());
         }
     }
 

@@ -45,8 +45,9 @@ public class UndoRedoList {
 
         @Override
         public boolean equals(@Nullable Object obj) {
-            return
-                    obj instanceof Record && ((Record) obj).key.equals(key) && ((Record) obj).value.equals(value);
+            return obj instanceof Record &&
+                    ((Record) obj).key.equals(key) &&
+                    ((Record) obj).value.equals(value);
         }
     }
 
@@ -55,14 +56,17 @@ public class UndoRedoList {
         Record record;
         Node next = null;
         Node prev = null;
+
         Node(Record record) {
             this.record = record;
         }
     }
 
 
+    //Todo fix pointerIndex
+
     /**
-     * Adds an element to the list
+     * Adds an element to the collection
      */
     public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
         Node oldNode = new Node(new Record(key, oldValue));
@@ -72,24 +76,34 @@ public class UndoRedoList {
             oldNode.next = newNode;
             newNode.prev = oldNode;
             head = oldNode;
+            size = +2;
+            Log.d("XXX", "1");
         } else if (!oldNode.record.equals(newNode.record)) {
+
             if (pointer.record.key.equals(oldNode.record.key)) {
+
                 if (pointer.record.equals(oldNode.record)) {
                     newNode.prev = pointer;
                     pointer.next = newNode;
+                    size++;
+                    Log.d("XXX", "2");
                 }
+
             } else {
+                Log.d("XXX", "3");
                 oldNode.prev = pointer;
                 pointer.next = oldNode;
                 oldNode.next = newNode;
                 newNode.prev = oldNode;
+                size = +2;
             }
         }
         pointer = newNode;
-        pointerIndex++;
-        size = pointerIndex;
     }
 
+    /**
+     * @eturns the previous (@link #Record) object without moving the pointer
+     */
     public Record getPrevious() {
         if (pointer == null) {
             throw new NoSuchElementException();
@@ -97,12 +111,19 @@ public class UndoRedoList {
         return pointer.prev.record;
     }
 
+    /**
+     * @eturns the next (@link #Record) object without moving the pointer
+     */
     public Record getNext() {
         if (pointer == null) {
             throw new NoSuchElementException();
         }
         return pointer.next.record;
     }
+
+    /**
+     * @return the current (@link #Record) object which the pointer is pointing at
+     */
 
     public Record getCurrent() {
         if (pointer == null) {
@@ -112,61 +133,73 @@ public class UndoRedoList {
     }
 
     /**
-     * @return Moves the pointer to the next element in the list
+     * Moves the pointer one step forward
+     *
+     * @return Returns the next (@link #Record) object
      */
     public Record redo() {
-        if (pointer.next == null) {
-            throw new NoSuchElementException();
+        if (pointer.next != null) {
+            Node current = pointer;
+            pointer = pointer.next;
+            if (current.record.key.equals(pointer.record.key)) {
+                return pointer.record;
+            } else {
+                pointer = pointer.next;
+                return pointer.record;
+            }
         }
-        pointerIndex++;
-        pointer = pointer.next;
-        return pointer.record;
+        return null;
     }
 
     /**
-     * @return Moves the pointer to the previous element in the list
+     * Moves the pointer one step backwards
+     *
+     * @return Returns the previous (@link #Record) object
      */
     public Record undo() {
-        if (pointer.prev == null) {
-            throw new NoSuchElementException();
+        if (pointer.prev != null) {
+            Node current = pointer;
+            pointer = pointer.prev;
+            if (current.record.key.equals(pointer.record.key)) {
+                return pointer.record;
+            } else {
+                pointer = pointer.prev;
+                return pointer.record;
+            }
         }
-        pointerIndex--;
-        pointer = pointer.prev;
-
-        return pointer.record;
+        return null;
     }
 
-
     /**
-     * @return A boolean for whether a next element exists
+     * @return a boolean for whether a next element exists
      */
     public boolean canRedo() {
         return pointer != null && pointer.next != null;
     }
 
     /**
-     * @return A boolean for whether a previous element exists
+     * @return a boolean for whether a previous element exists
      */
     public boolean canUndo() {
         return pointer != null && pointer.prev != null;
     }
 
     /**
-     * @return The size of the list
+     * @return the size of the list
      */
     public int size() {
         return size;
     }
 
     /**
-     * @return A boolean for whether the list is empty or not
+     * @return a boolean for whether the collection is empty or not
      */
     public boolean isEmpty() {
         return size == 0;
     }
 
     /**
-     * Deletes all elements in the list and sets the size to 0
+     * Deletes all elements in the collection and sets the size to 0
      */
     public void clear() {
         head = null;
@@ -177,19 +210,19 @@ public class UndoRedoList {
 
 
     /**
-     * @return A string representation of all elements in the list
+     * @return a string representation of all elements in the collection
      */
     @NonNull
     public String toString() {
-        StringBuilder sb = new StringBuilder().append('[');
+        StringBuilder sb = new StringBuilder().append('{');
         Node tempHead = head;
         while (tempHead != null) {
-            sb.append(tempHead.record);
+            sb.append(String.format("%s=%s", tempHead.record.key, tempHead.record.value));
             tempHead = tempHead.next;
             if (tempHead != null) {
                 sb.append(',').append(' ');
             }
         }
-        return sb.append(']').toString();
+        return sb.append('}').toString();
     }
 }

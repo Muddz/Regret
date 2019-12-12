@@ -4,6 +4,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -54,6 +55,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
+
+        //TODO make a better example of this solutoin
+        previousText = editText.getText().toString();
     }
 
 
@@ -99,15 +103,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
+    //TODO make a better example of this solutoin
+    String previousText;
+
+    //TODO make a better example of this solutoin
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
             String text = s.toString().trim();
             if (!text.isEmpty() || !text.equals("")) {
-                regret.add(KEY_TEXT, editText.getText().toString(), text);
+                Log.d("XXX", "Adding KEY_TEXT: " + text);
+                regret.add(KEY_TEXT, previousText, text);
             }
         }
         isUndoing = false;
+        previousText = s.toString();
     }
 
     @Override
