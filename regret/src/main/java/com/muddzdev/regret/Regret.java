@@ -93,7 +93,6 @@ public class Regret {
      * Deletes all elements in the collection
      */
     public void clear() {
-        Log.d("XXX", undoRedoList.toString());
         undoRedoList.clear();
         updateCanDoListener();
     }

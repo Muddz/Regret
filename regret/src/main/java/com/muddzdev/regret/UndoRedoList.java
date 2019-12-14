@@ -1,7 +1,5 @@
 package com.muddzdev.regret;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -77,7 +75,6 @@ public class UndoRedoList {
             newNode.prev = oldNode;
             head = oldNode;
             size = +2;
-            Log.d("XXX", "1");
         } else if (!oldNode.record.equals(newNode.record)) {
 
             if (pointer.record.key.equals(oldNode.record.key)) {
@@ -86,11 +83,9 @@ public class UndoRedoList {
                     newNode.prev = pointer;
                     pointer.next = newNode;
                     size++;
-                    Log.d("XXX", "2");
                 }
 
             } else {
-                Log.d("XXX", "3");
                 oldNode.prev = pointer;
                 pointer.next = oldNode;
                 oldNode.next = newNode;
