@@ -1,7 +1,5 @@
 package com.muddzdev.regret;
 
-import android.util.Log;
-
 import androidx.annotation.NonNull;
 
 /*
@@ -20,9 +18,6 @@ import androidx.annotation.NonNull;
  */
 
 public class Regret {
-
-    //TODO update tests to match the new add methods algortihm
-    //TODO tests if photoshop and MC Office behaves the same way as Regret
 
     private UndoRedoList undoRedoList;
     private RegretListener listener;
@@ -46,7 +41,7 @@ public class Regret {
     /**
      * @return the current value
      */
-    public UndoRedoList.Record getCurrent() {
+    public Action getCurrent() {
         return undoRedoList.getCurrent();
     }
 
@@ -54,8 +49,8 @@ public class Regret {
      * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
-        UndoRedoList.Record record = undoRedoList.undo();
-        updateDoListener(record);
+        Action action = undoRedoList.undo();
+        updateDoListener(action);
         updateCanDoListener();
     }
 
@@ -63,8 +58,8 @@ public class Regret {
      * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
-        UndoRedoList.Record record = undoRedoList.redo();
-        updateDoListener(record);
+        Action action = undoRedoList.redo();
+        updateDoListener(action);
         updateCanDoListener();
     }
 
@@ -104,9 +99,9 @@ public class Regret {
         }
     }
 
-    private void updateDoListener(UndoRedoList.Record record) {
-        String key = record.key;
-        Object value = record.value;
+    private void updateDoListener(Action action) {
+        String key = action.key;
+        Object value = action.value;
         if (listener != null) {
             listener.onDo(key, value);
         }

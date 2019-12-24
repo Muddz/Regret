@@ -25,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int COLOR_PICKER_TEXT_COLOR = 111;
     private static final int COLOR_PICKER_BACKGROUND = 222;
     private boolean isUndoing;
+    private String previousText;
+    private Regret regret;
 
     ImageView btnUndo;
     ImageView btnRedo;
@@ -32,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtColorBtn;
     TextView backgroundColorBtn;
     EditText editText;
-    Regret regret;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
 
-        //TODO make a better example of this solutoin
+        //Before we edit the text, lets store the current text in an object for later use
         previousText = editText.getText().toString();
     }
 
@@ -103,16 +105,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         }
     }
 
-    //TODO make a better example of this solutoin
-    String previousText;
-
-    //TODO make a better example of this solutoin
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
             String text = s.toString().trim();
             if (!text.isEmpty() || !text.equals("")) {
-                Log.d("XXX", "Adding KEY_TEXT: " + text);
                 regret.add(KEY_TEXT, previousText, text);
             }
         }
