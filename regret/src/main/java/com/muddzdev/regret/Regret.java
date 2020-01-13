@@ -22,6 +22,16 @@ public class Regret {
     private UndoRedoList undoRedoList;
     private RegretListener listener;
 
+    @NonNull
+    @Override
+    public String toString() {
+        return undoRedoList.toString();
+    }
+
+    public int getSize() {
+        return undoRedoList.getSize();
+    }
+
     public Regret(@NonNull RegretListener listener) {
         this.listener = listener;
         this.undoRedoList = new UndoRedoList();
@@ -30,11 +40,11 @@ public class Regret {
 
     /**
      * @param key      an identifier for the values
-     * @param oldValue the old or current value
+     * @param currentValue the old or current value
      * @param newValue the new value
      */
-    public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
-        undoRedoList.add(key, oldValue, newValue);
+    public void add(@NonNull String key, @NonNull Object currentValue, @NonNull Object newValue) {
+        undoRedoList.add(key, currentValue, newValue);
         updateCanDoListener();
     }
 
@@ -100,9 +110,9 @@ public class Regret {
     }
 
     private void updateDoListener(Action action) {
-        String key = action.key;
-        Object value = action.value;
-        if (listener != null) {
+        if (action != null && listener != null) {
+            String key = action.key;
+            Object value = action.value;
             listener.onDo(key, value);
         }
     }

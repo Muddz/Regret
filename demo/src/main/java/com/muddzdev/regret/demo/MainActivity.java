@@ -47,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRedo = findViewById(R.id.btn_redo);
         btnClear = findViewById(R.id.btn_clear);
         editText = findViewById(R.id.edittext);
+        findViewById(R.id.btn_size).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = regret.getSize();
+                Toast.makeText(MainActivity.this, size + "", Toast.LENGTH_LONG).show();
+                Log.d("XXX", regret.toString());
+            }
+        });
 
         editText.addTextChangedListener(this);
         btnRedo.setOnClickListener(this);
@@ -108,13 +116,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
-            String text = s.toString().trim();
-            if (!text.isEmpty() || !text.equals("")) {
-                regret.add(KEY_TEXT, previousText, text);
-            }
+            regret.add(KEY_TEXT, previousText, s.toString());
+            previousText = s.toString();
         }
-        isUndoing = false;
-        previousText = s.toString();
     }
 
     @Override
@@ -128,11 +132,13 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 isUndoing = true;
                 regret.undo();
                 Toast.makeText(this, "UNDO", Toast.LENGTH_SHORT).show();
+                isUndoing = false;
                 break;
             case R.id.btn_redo:
                 isUndoing = true;
                 regret.redo();
                 Toast.makeText(this, "REDO", Toast.LENGTH_SHORT).show();
+                isUndoing = false;
                 break;
             case R.id.txt_color_picker:
                 ColorPickerDialogFragment.newInstance(COLOR_PICKER_TEXT_COLOR, editText.getCurrentTextColor()).show(getFragmentManager(), null);

@@ -10,11 +10,10 @@ import java.util.NoSuchElementException;
 
 public class RegretTests implements Regret.RegretListener {
 
-    private Regret regret;
     private static final String KEY_TEXT_COLOR = "KEY_TEXT_COLOR";
     private static final String KEY_BACKGROUND_COLOR = "KEY_BACKGROUND_COLOR";
     private boolean isUndoing, isRedoing, isClearing;
-
+    private Regret regret;
 
     @Before
     public void setUp() {
