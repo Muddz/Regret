@@ -6,48 +6,61 @@
     android:orientation="vertical">
 
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="?attr/actionBarSize"
         android:layout_gravity="end|center_vertical"
-        android:background="#616161"
+        android:background="@color/colorPrimary"
         android:gravity="center_vertical"
-        android:orientation="horizontal"
-        android:padding="8dp">
+        android:padding="16dp">
 
         <TextView
             android:id="@+id/btn_clear"
-            android:layout_width="0dp"
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:layout_weight="1"
             android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="5dp"
             android:text="Clear history"
             android:textColor="#fff"
-            android:textSize="15sp"
+            android:textSize="16sp"
             android:textStyle="bold" />
 
-        <ImageView
-            android:id="@+id/btn_undo"
+        <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginRight="5dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="5dp"
-            android:src="@drawable/ic_undo_black_24dp"
-            tools:ignore="ContentDescription" />
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:gravity="center_vertical"
+            android:orientation="horizontal">
 
-        <ImageView
-            android:id="@+id/btn_redo"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginRight="12dp"
-            android:background="?attr/selectableItemBackgroundBorderless"
-            android:padding="5dp"
-            android:src="@drawable/ic_redo_black_24dp"
-            tools:ignore="ContentDescription" />
-    </LinearLayout>
+            <TextView
+                android:id="@+id/btn_size"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:text="           size              "
+                android:textColor="#fff"
+                android:textSize="16sp"
+                android:textStyle="bold" />
+
+            <ImageView
+                android:id="@+id/btn_undo"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:layout_marginEnd="18dp"
+                android:layout_marginRight="18dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_undo_black_24dp"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/btn_redo"
+                android:layout_width="28dp"
+                android:layout_height="28dp"
+                android:background="?attr/selectableItemBackgroundBorderless"
+                android:src="@drawable/ic_redo_black_24dp"
+                tools:ignore="ContentDescription" />
+        </LinearLayout>
+    </RelativeLayout>
 
     <EditText
         android:id="@+id/edittext"

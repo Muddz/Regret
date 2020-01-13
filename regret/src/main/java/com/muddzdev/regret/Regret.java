@@ -19,110 +19,116 @@ import androidx.annotation.NonNull;
 
 public class Regret {
 
-    //TODO should we include an getSize method + testSize method??
-    //Todo Any solutions for non-tracking entries?
-    //TODO Any solutions for entries like when undoing from bacground til text color?
-
+    private UndoRedoList undoRedoList;
     private RegretListener listener;
-    private UndoRedoManager undoRedoManager;
+
+    @NonNull
+    @Override
+    public String toString() {
+        return undoRedoList.toString();
+    }
+
+    public int getSize() {
+        return undoRedoList.getSize();
+    }
 
     public Regret(@NonNull RegretListener listener) {
         this.listener = listener;
-        this.undoRedoManager = new UndoRedoManager();
+        this.undoRedoList = new UndoRedoList();
+        updateCanDoListener();
     }
 
-
     /**
-     * @param key An identifier for the value
-     * @param oldValue The value associated with the key
+     * @param key      an identifier for the values
+     * @param currentValue the old or current value
+     * @param newValue the new value
      */
-    public void add(@NonNull String key, @NonNull Object oldValue, @NonNull Object newValue) {
-        undoRedoManager.add(key, oldValue, newValue);
+    public void add(@NonNull String key, @NonNull Object currentValue, @NonNull Object newValue) {
+        undoRedoList.add(key, currentValue, newValue);
         updateCanDoListener();
     }
 
     /**
      * @return the current value
      */
-    public Object getCurrent() {
-        Record record = undoRedoManager.getCurrent();
-        return record.getValue();
+    public Action getCurrent() {
+        return undoRedoList.getCurrent();
     }
 
     /**
-     * Returns the previous key-value pair via the callback onDo() in RegretListener
+     * Returns the previous key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void undo() {
-        Record record = undoRedoManager.undo();
-        updateDoListener(record);
+        Action action = undoRedoList.undo();
+        updateDoListener(action);
         updateCanDoListener();
     }
 
     /**
-     * Returns the next key-value pair via the callback onDo() in RegretListener
+     * Returns the next key-value pair via the callback onDo() in {@link RegretListener}
      */
     public void redo() {
-        Record record = undoRedoManager.redo();
-        updateDoListener(record);
+        Action action = undoRedoList.redo();
+        updateDoListener(action);
         updateCanDoListener();
     }
 
     /**
-     * @return True if a previous-entry exists, else false
+     * @return true if a previous-element exists, else false
      */
     public boolean canUndo() {
-        return undoRedoManager.canUndo();
+        return undoRedoList.canUndo();
     }
 
     /**
-     * @return True if a next-entry exists, else false
+     * @return true if a next-element exists, else false
      */
     public boolean canRedo() {
-        return undoRedoManager.canRedo();
+        return undoRedoList.canRedo();
     }
 
     /**
-     * @return Whether the undo-redo list has entries or not
+     * @return true if the collection is empty else false
      */
     public boolean isEmpty() {
-        return undoRedoManager.isEmpty();
+        return undoRedoList.isEmpty();
     }
 
     /**
-     * Clears the undo-redo list
+     * Deletes all elements in the collection
      */
     public void clear() {
-        undoRedoManager.clear();
+        undoRedoList.clear();
         updateCanDoListener();
     }
 
 
     private void updateCanDoListener() {
         if (listener != null) {
-            listener.onCanDo(undoRedoManager.canUndo(), undoRedoManager.canRedo());
+            listener.onCanDo(undoRedoList.canUndo(), undoRedoList.canRedo());
         }
     }
 
-    private void updateDoListener(Record record) {
-        String key = record.getKey();
-        Object value = record.getValue();
-        if (listener != null) {
+    private void updateDoListener(Action action) {
+        if (action != null && listener != null) {
+            String key = action.key;
+            Object value = action.value;
             listener.onDo(key, value);
         }
     }
 
     public interface RegretListener {
         /**
-         * onDo() returns a key-value pair when undo() or redo() is called
+         * Returns a key-value pair when {@link #undo()} or {@link #redo()} is called
          *
-         * @param key   The key to identify the returned value
-         * @param value The value associated with the key
+         * @param key   the key to identify the returned value
+         * @param value the value associated with the key
          */
         void onDo(String key, Object value);
 
         /**
-         * onCanDo() updates for every call to undo(), redo() or add().
-         * This call is useful for updating the state of UI undo or redo buttons
+         * onCanDo() updates for every call to {@link #undo()}, {@link #redo()} or {@link #add(String, Object, Object)}.
+         * This callback is specifically useful for updating the states of undo and redo buttons.
          */
         void onCanDo(boolean canUndo, boolean canRedo);
     }

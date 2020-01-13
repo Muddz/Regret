@@ -2,9 +2,9 @@ package com.muddzdev.regret.demo;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -16,6 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
 import com.muddzdev.regret.Regret;
 
+
 public class MainActivity extends AppCompatActivity implements View.OnClickListener, ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, Regret.RegretListener {
 
     private static final String KEY_TEXT = "KEY_TEXT";
@@ -24,6 +25,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     private static final int COLOR_PICKER_TEXT_COLOR = 111;
     private static final int COLOR_PICKER_BACKGROUND = 222;
     private boolean isUndoing;
+    private String previousText;
+    private Regret regret;
 
     ImageView btnUndo;
     ImageView btnRedo;
@@ -31,7 +34,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView txtColorBtn;
     TextView backgroundColorBtn;
     EditText editText;
-    Regret regret;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,6 +47,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRedo = findViewById(R.id.btn_redo);
         btnClear = findViewById(R.id.btn_clear);
         editText = findViewById(R.id.edittext);
+        findViewById(R.id.btn_size).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int size = regret.getSize();
+                Toast.makeText(MainActivity.this, size + "", Toast.LENGTH_LONG).show();
+                Log.d("XXX", regret.toString());
+            }
+        });
 
         editText.addTextChangedListener(this);
         btnRedo.setOnClickListener(this);
@@ -54,30 +65,30 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
+
+        //Before we edit the text, lets store the current text in an object for later use
+        previousText = editText.getText().toString();
     }
 
 
-    //The returned values when regret.undo() or regret.redo() is called
+    //The listener returns Key-Pair when regret.undo() or regret.redo() is called
     @Override
     public void onDo(String key, Object value) {
         switch (key) {
             case KEY_TEXT:
                 editText.setText((CharSequence) value);
-                saveText();
                 break;
             case KEY_TEXT_COLOR:
                 editText.setTextColor((Integer) value);
-                saveTextColor();
                 break;
             case KEY_BACKGROUND_COLOR:
                 editText.setBackgroundColor((Integer) value);
-                saveBackgroundColor();
                 break;
         }
     }
 
 
-    //This Regret callback keeps track of if you're able to undo or redo, every time a change happens in Regret's history.
+    //This listener returns whether its still possible to undo/redo after every add, undo or redo and clear operation
     @Override
     public void onCanDo(boolean canUndo, boolean canRedo) {
         btnUndo.setAlpha(canUndo ? 1 : 0.4f);
@@ -93,13 +104,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
             case COLOR_PICKER_TEXT_COLOR:
                 regret.add(KEY_TEXT_COLOR, editText.getCurrentTextColor(), newColor);
                 editText.setTextColor(newColor);
-                saveTextColor();
                 break;
             case COLOR_PICKER_BACKGROUND:
                 ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
                 regret.add(KEY_BACKGROUND_COLOR, colorDrawable.getColor(), newColor);
                 editText.setBackgroundColor(newColor);
-                saveBackgroundColor();
                 break;
         }
     }
@@ -107,13 +116,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
-            String text = s.toString().trim();
-            if (!text.isEmpty() || !text.equals("")) {
-                regret.add(KEY_TEXT, editText.getText().toString(), text);
-                saveText();
-            }
+            regret.add(KEY_TEXT, previousText, s.toString());
+            previousText = s.toString();
         }
-        isUndoing = false;
     }
 
     @Override
@@ -121,54 +126,28 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.btn_clear:
                 regret.clear();
-                PreferenceManager.getDefaultSharedPreferences(this).edit().clear().apply();
                 Toast.makeText(this, "History cleared", Toast.LENGTH_SHORT).show();
                 break;
             case R.id.btn_undo:
                 isUndoing = true;
                 regret.undo();
                 Toast.makeText(this, "UNDO", Toast.LENGTH_SHORT).show();
+                isUndoing = false;
                 break;
             case R.id.btn_redo:
                 isUndoing = true;
                 regret.redo();
                 Toast.makeText(this, "REDO", Toast.LENGTH_SHORT).show();
+                isUndoing = false;
                 break;
             case R.id.txt_color_picker:
                 ColorPickerDialogFragment.newInstance(COLOR_PICKER_TEXT_COLOR, editText.getCurrentTextColor()).show(getFragmentManager(), null);
                 break;
             case R.id.bcg_color_picker:
-                ColorPickerDialogFragment.newInstance(COLOR_PICKER_BACKGROUND, getBackgroundColor()).show(getFragmentManager(), null);
+                ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
+                ColorPickerDialogFragment.newInstance(COLOR_PICKER_BACKGROUND, colorDrawable.getColor()).show(getFragmentManager(), null);
                 break;
         }
-    }
-
-    private int getBackgroundColor() {
-        ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
-        return colorDrawable.getColor();
-    }
-
-
-    private void saveBackgroundColor() {
-        PreferenceManager
-                .getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(KEY_BACKGROUND_COLOR, getBackgroundColor())
-                .apply();
-    }
-
-    private void saveTextColor() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putInt(KEY_TEXT_COLOR, editText.getCurrentTextColor())
-                .apply();
-    }
-
-    private void saveText() {
-        PreferenceManager.getDefaultSharedPreferences(this)
-                .edit()
-                .putString(KEY_TEXT, editText.getText().toString())
-                .apply();
     }
 
     //Not in use
