@@ -1,6 +1,7 @@
 package com.muddzdev.regret;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import java.util.NoSuchElementException;
 
@@ -108,8 +109,7 @@ public class UndoRedoList {
      *
      * @return Returns the next {@link Action} object or null if next object doesn't exists
      */
-
-    @NonNull
+    @Nullable
     public Action redo() {
         if (pointer.next != null) {
             Node tempPointer = pointer;
@@ -132,7 +132,7 @@ public class UndoRedoList {
      * @return Returns the previous {@link Action} object or null if next object doesn't exists
      */
 
-    @NonNull
+    @Nullable
     public Action undo() {
         if (pointer.prev != null) {
             Node tempPointer = pointer;
