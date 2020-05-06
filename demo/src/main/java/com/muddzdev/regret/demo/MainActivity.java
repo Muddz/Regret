@@ -35,6 +35,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     TextView backgroundColorBtn;
     EditText editText;
 
+    View currentView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         btnRedo = findViewById(R.id.btn_redo);
         btnClear = findViewById(R.id.btn_clear);
         editText = findViewById(R.id.edittext);
+
         findViewById(R.id.btn_size).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -63,6 +65,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         txtColorBtn.setOnClickListener(this);
         backgroundColorBtn.setOnClickListener(this);
 
+
+
         //Instantiate Regret with context and a listener
         regret = new Regret(this);
 
@@ -73,16 +77,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     //The listener returns Key-Pair when regret.undo() or regret.redo() is called
     @Override
-    public void onDo(String key, Object value) {
+    public void onDo(String key, Object value,View view) {
         switch (key) {
             case KEY_TEXT:
-                editText.setText((CharSequence) value);
+                ((EditText)view).setText((CharSequence) value);
                 break;
             case KEY_TEXT_COLOR:
-                editText.setTextColor((Integer) value);
+                ((EditText)view).setTextColor((Integer) value);
                 break;
             case KEY_BACKGROUND_COLOR:
-                editText.setBackgroundColor((Integer) value);
+                view.setBackgroundColor((Integer) value);
                 break;
         }
     }
@@ -102,12 +106,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onColorSelected(int dialogId, int newColor) {
         switch (dialogId) {
             case COLOR_PICKER_TEXT_COLOR:
-                regret.add(KEY_TEXT_COLOR, editText.getCurrentTextColor(), newColor);
+                regret.add(KEY_TEXT_COLOR, editText.getCurrentTextColor(), newColor,editText);
                 editText.setTextColor(newColor);
                 break;
             case COLOR_PICKER_BACKGROUND:
                 ColorDrawable colorDrawable = (ColorDrawable) editText.getBackground();
-                regret.add(KEY_BACKGROUND_COLOR, colorDrawable.getColor(), newColor);
+                regret.add(KEY_BACKGROUND_COLOR, colorDrawable.getColor(), newColor,editText);
                 editText.setBackgroundColor(newColor);
                 break;
         }
@@ -116,7 +120,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     @Override
     public void afterTextChanged(Editable s) {
         if (!isUndoing) {
-            regret.add(KEY_TEXT, previousText, s.toString());
+            regret.add(KEY_TEXT, previousText, s.toString(),editText);
             previousText = s.toString();
         }
     }
