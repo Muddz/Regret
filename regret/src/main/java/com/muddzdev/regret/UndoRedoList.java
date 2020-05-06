@@ -1,5 +1,7 @@
 package com.muddzdev.regret;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
@@ -49,6 +51,36 @@ public class UndoRedoList {
     public void add(@NonNull String key, @NonNull Object currentValue, @NonNull Object newValue) {
         Node oldNode = new Node(new Action(key, currentValue));
         Node newNode = new Node(new Action(key, newValue));
+        if (head == null || pointer == head) {
+            oldNode.next = newNode;
+            newNode.prev = oldNode;
+            head = oldNode;
+            pointerIndex = 2;
+        } else {
+            if (pointer.action.key.equals(key) || pointer.prev.action.key.equals(key)) {
+                newNode.prev = pointer;
+                pointer.next = newNode;
+                pointerIndex++;
+            } else {
+                oldNode.next = newNode;
+                newNode.prev = oldNode;
+                pointer.next = oldNode;
+                oldNode.prev = pointer;
+                pointerIndex += 2;
+            }
+        }
+        size = pointerIndex;
+        pointer = newNode;
+    }
+
+    /**
+     * Adds an key-values pair data to the collection.
+     * Both currentValue and newValue should be of the same key identifier
+     * add View that specific which view in action
+     */
+    public void add(@NonNull String key, @NonNull Object currentValue, @NonNull Object newValue, View view) {
+        Node oldNode = new Node(new Action(key, currentValue,view));
+        Node newNode = new Node(new Action(key, newValue,view));
         if (head == null || pointer == head) {
             oldNode.next = newNode;
             newNode.prev = oldNode;
