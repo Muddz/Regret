@@ -1,5 +1,7 @@
 package com.muddzdev.regret;
 
+import android.view.View;
+
 import androidx.annotation.NonNull;
 
 /*
@@ -48,6 +50,16 @@ public class Regret {
         updateCanDoListener();
     }
 
+    /**
+     * @param key      an identifier for the values
+     * @param currentValue the old or current value
+     * @param newValue the new value
+     * @param view the view that changed
+     */
+    public void add(@NonNull String key, @NonNull Object currentValue, @NonNull Object newValue,View view) {
+        undoRedoList.add(key, currentValue, newValue,view);
+        updateCanDoListener();
+    }
     /**
      * @return the current value
      */
@@ -113,7 +125,8 @@ public class Regret {
         if (action != null && listener != null) {
             String key = action.key;
             Object value = action.value;
-            listener.onDo(key, value);
+            View view = action.view;
+            listener.onDo(key, value,view);
         }
     }
 
@@ -123,8 +136,10 @@ public class Regret {
          *
          * @param key   the key to identify the returned value
          * @param value the value associated with the key
+         * @param value the view that action did that
          */
-        void onDo(String key, Object value);
+        void onDo(String key, Object value, View view);
+
 
         /**
          * onCanDo() updates for every call to {@link #undo()}, {@link #redo()} or {@link #add(String, Object, Object)}.
