@@ -39,27 +39,11 @@ public class RegretTests implements Regret.RegretListener {
         Assert.assertTrue(regret.canRedo());
     }
 
-
-    @Test(expected = NoSuchElementException.class)
-    public void testClear() {
-        isClearing = true;
-        regret.clear();
-        isClearing = false;
-        Assert.assertTrue(regret.isEmpty());
-        Assert.assertFalse(regret.canUndo());
-        Assert.assertFalse(regret.canRedo());
-        regret.getCurrent();
-    }
-
     @Test
-    public void testGetCurrentValue() {
+    public void testGetCurrent() {
         Action action = regret.getCurrent();
         Assert.assertEquals(Color.BLACK, action.value);
-        regret.undo();
-        action = regret.getCurrent();
-        Assert.assertEquals(Color.GREEN, action.value);
     }
-
 
     @Test
     public void testUndo() {
@@ -75,6 +59,18 @@ public class RegretTests implements Regret.RegretListener {
         regret.redo();
         isRedoing = false;
     }
+
+    @Test
+    public void testClear() {
+        isClearing = true;
+        regret.clear();
+        isClearing = false;
+        Assert.assertTrue(regret.isEmpty());
+        Assert.assertFalse(regret.canUndo());
+        Assert.assertFalse(regret.canRedo());
+        Assert.assertEquals(0, regret.getSize());
+    }
+
 
     @Override
     public void onDo(String key, Object value) {
