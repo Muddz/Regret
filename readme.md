@@ -3,7 +3,7 @@
 [![APK](https://img.shields.io/badge/Download-Demo-brightgreen.svg)](https://github.com/Muddz/Regret/raw/master/RegretDemo.apk)
 
 Regret is an Android library for apps that wants to implement an undo/redo feature.
-The library is simple to use and works with all primitive types and objects.
+The library is simple to use and works with all primitive types and objects and is especially suitable for drawing, text and photo editing apps.
 
 Regret is based on the [UndoRedoList](https://github.com/Muddz/UndoRedoList)
 
