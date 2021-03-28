@@ -1,10 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
-
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -37,7 +35,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:text="           size              "
+                android:text="         size            "
                 android:textColor="#fff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -49,16 +47,14 @@
                 android:layout_marginEnd="18dp"
                 android:layout_marginRight="18dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_undo_black_24dp"
-                tools:ignore="ContentDescription" />
+                android:src="@drawable/ic_undo_black_24dp" />
 
             <ImageView
                 android:id="@+id/btn_redo"
                 android:layout_width="28dp"
                 android:layout_height="28dp"
                 android:background="?attr/selectableItemBackgroundBorderless"
-                android:src="@drawable/ic_redo_black_24dp"
-                tools:ignore="ContentDescription" />
+                android:src="@drawable/ic_redo_black_24dp" />
         </LinearLayout>
     </RelativeLayout>
 
@@ -71,8 +67,7 @@
         android:gravity="center"
         android:text="Hello World"
         android:textColor="#000"
-        android:textSize="28sp"
-        tools:ignore="Autofill,LabelFor,TextFields" />
+        android:textSize="28sp" />
 
 
     <LinearLayout
