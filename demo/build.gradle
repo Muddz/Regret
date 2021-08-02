@@ -3,7 +3,7 @@ apply plugin: 'com.android.application'
 android {
     compileSdkVersion 29
     defaultConfig {
-        applicationId "com.muddzdev.regret.demo"
+        applicationId "io.github.muddz.regret.demo"
         minSdkVersion 16
         targetSdkVersion 29
         versionCode 1

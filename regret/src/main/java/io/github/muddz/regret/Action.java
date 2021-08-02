@@ -1,4 +1,4 @@
-package com.muddzdev.regret;
+package io.github.muddz.regret;
 
 import androidx.annotation.Nullable;
 

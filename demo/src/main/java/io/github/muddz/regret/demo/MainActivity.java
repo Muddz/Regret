@@ -1,4 +1,4 @@
-package com.muddzdev.regret.demo;
+package io.github.muddz.regret.demo;
 
 import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
@@ -9,8 +9,9 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
-import com.muddzdev.regret.Regret;
-import com.muddzdev.regret.demo.databinding.ActivityMainBinding;
+
+import io.github.muddz.regret.Regret;
+import io.github.muddz.regret.demo.databinding.ActivityMainBinding;
 
 
 public class MainActivity extends AppCompatActivity implements ColorPickerDialogFragment.ColorPickerDialogListener, TextWatcher, Regret.RegretListener {

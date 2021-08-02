@@ -1,4 +1,4 @@
-package com.muddzdev.regret;
+package io.github.muddz.regret;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -106,6 +106,7 @@ public class UndoRedoList {
 
     /**
      * Moves the pointer one step forward
+     *
      * @return Returns the next {@link Action} object
      * @throws NoSuchElementException if the next object doesn't exist
      */
@@ -128,6 +129,7 @@ public class UndoRedoList {
 
     /**
      * Moves the pointer one step backwards
+     *
      * @return Returns the previous {@link Action} object or null if next object doesn't exists
      * @throws NoSuchElementException if the previous object doesn't exist
      */

@@ -1,12 +1,10 @@
-package com.muddzdev.regret;
+package io.github.muddz.regret;
 
 import android.graphics.Color;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-
-import java.util.NoSuchElementException;
 
 public class RegretTests implements Regret.RegretListener {
 
