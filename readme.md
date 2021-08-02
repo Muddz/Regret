@@ -50,7 +50,7 @@ Regret is based on the [UndoRedoList](https://github.com/Muddz/UndoRedoList)
 Add the dependency in your `build.gradle`
 ```groovy
 dependencies {
-    implementation 'com.muddzdev:regret:1.4.0'  
+    implementation 'io.github.muddz:regret:1.4.0'  
 }
 ```
  ----
