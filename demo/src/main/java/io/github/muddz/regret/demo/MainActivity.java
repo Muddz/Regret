@@ -7,6 +7,9 @@ import android.text.TextWatcher;
 import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.github.danielnilsson9.colorpickerview.dialog.ColorPickerDialogFragment;
+
+import io.github.muddz.regret.Regret;
 import io.github.muddz.regret.demo.databinding.ActivityMainBinding;
 
 
